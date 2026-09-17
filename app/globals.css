@@ -1,0 +1,267 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Self-hosted variable fonts (no external requests, no layout shift).
+   Files live in /public/fonts and are subset by Fontsource to
+   latin + latin-ext, which covers the names used across the site.
+------------------------------------------------------------------ */
+
+@font-face {
+  font-family: "Cormorant Garamond Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url("/fonts/cormorant-garamond-latin-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url("/fonts/cormorant-garamond-latin-ext-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond Variable";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url("/fonts/cormorant-garamond-latin-wght-italic.woff2")
+    format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond Variable";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 300 700;
+  src: url("/fonts/cormorant-garamond-latin-ext-wght-italic.woff2")
+    format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Cinzel Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 900;
+  src: url("/fonts/cinzel-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Cinzel Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 900;
+  src: url("/fonts/cinzel-latin-ext-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/inter-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/inter-latin-ext-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ------------------------------------------------------------------
+   Design tokens
+   Palette is derived from the AHV logo: a deep maroon-to-crimson
+   gradient, paired with warm parchment neutrals.
+------------------------------------------------------------------ */
+
+@theme {
+  --font-display: "Cormorant Garamond Variable", Georgia, "Times New Roman",
+    serif;
+  --font-wordmark: "Cinzel Variable", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+
+  /* Brand reds */
+  --color-brand-50: #fdf2f3;
+  --color-brand-100: #fbe0e3;
+  --color-brand-200: #f6c3c8;
+  --color-brand-300: #ee989f;
+  --color-brand-400: #e2606c;
+  --color-brand-500: #d13a48;
+  --color-brand-600: #c8102e;
+  --color-brand-700: #a6192e;
+  --color-brand-800: #8e1224;
+  --color-brand-900: #6e0b1a;
+  --color-brand-950: #45060f;
+
+  /* Warm neutrals */
+  --color-ink: #1c1517;
+  --color-ink-soft: #3d3335;
+  --color-ash: #6b6058;
+  --color-sand: #e4d9c8;
+  --color-parchment: #f3ece1;
+  --color-cream: #fbf8f3;
+
+  /* Heritage accent */
+  --color-ochre: #b8892f;
+  --color-ochre-soft: #e8d5a8;
+}
+
+@layer base {
+  :root {
+    --header-height: 5rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "kern" 1, "liga" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-700);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-700);
+    color: var(--color-cream);
+  }
+}
+
+@layer components {
+  /* Small uppercase label used above section headings. */
+  .eyebrow {
+    font-family: var(--font-wordmark);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-brand-700);
+  }
+
+  .rule-ochre {
+    height: 2px;
+    width: 3.5rem;
+    background-color: var(--color-ochre);
+  }
+
+  /* Long-form article typography for the prophet profiles. */
+  .prose-ahv {
+    color: var(--color-ink-soft);
+    font-size: 1.0625rem;
+    line-height: 1.85;
+  }
+
+  .prose-ahv > * + * {
+    margin-top: 1.35em;
+  }
+
+  .prose-ahv h2 {
+    font-size: 1.75rem;
+    color: var(--color-ink);
+    margin-top: 2.5em;
+    margin-bottom: 0.1em;
+  }
+
+  .prose-ahv h3 {
+    font-family: var(--font-wordmark);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-brand-700);
+    margin-top: 2.5em;
+    margin-bottom: 0.1em;
+  }
+
+  .prose-ahv blockquote {
+    border-left: 3px solid var(--color-ochre);
+    padding-left: 1.5rem;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    line-height: 1.6;
+    font-style: italic;
+    color: var(--color-ink);
+  }
+
+  .prose-ahv a {
+    color: var(--color-brand-700);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prose-ahv strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
