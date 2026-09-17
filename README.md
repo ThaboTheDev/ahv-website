@@ -66,6 +66,27 @@ npm run logo           # render the brand mark to a PNG for review
 npm run africa:path    # regenerate the continent outline from map data
 ```
 
+### Troubleshooting
+
+**`TypeError: __webpack_modules__[moduleId] is not a function`**
+
+This means a Next.js build directory has been corrupted, usually by running a
+production build while a dev server was running against the same directory.
+
+Development and production are already isolated (`next dev` writes to
+`.next-dev`, `next build` writes to `.next`, see `next.config.mjs`), so this
+should not occur. If you see it anyway, clear both directories and restart:
+
+```bash
+rm -rf .next .next-dev      # stop the dev server first
+npm run dev
+```
+
+**Pages render the previous version of a change**
+
+Clear the dev cache the same way. If only the copy is stale, check that you
+edited `packages/content` rather than a page component.
+
 ---
 
 ## Project structure
