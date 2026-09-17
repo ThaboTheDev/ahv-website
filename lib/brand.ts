@@ -2,13 +2,13 @@
  * Brand mark geometry for African Hidden Voices.
  *
  * The logo depicts the African continent with a flock of birds rising out of
- * it — a metaphor for suppressed voices no longer hidden. This module holds
+ * it, a metaphor for suppressed voices no longer hidden. This module holds
  * the bird silhouette plus the flock layout, so both the React component and
  * the build/preview scripts share one source of truth.
  */
 
 /**
- * A swallow silhouette in flight — long swept wings raised in a shallow "V"
+ * A swallow silhouette in flight: long swept wings raised in a shallow "V"
  * with a forked tail. Normalised to roughly 100 units wide, centred on the
  * origin, with the body at the bottom centre.
  */
@@ -31,7 +31,7 @@ export interface Bird {
 
 /**
  * Flock layout: birds lift off the northern half of the continent and fan
- * outward to the north-west, echoing the logo artwork — smaller and higher
+ * outward to the north-west, echoing the logo artwork: smaller and higher
  * toward the top-left, larger and closer to the landmass at bottom-right.
  */
 export const FLOCK: Bird[] = [
@@ -42,7 +42,7 @@ export const FLOCK: Bird[] = [
   { x: 104, y: 96, scale: 0.44, rotate: -12, tone: "dark" },
   { x: 16, y: 158, scale: 0.4, rotate: -26, tone: "dark" },
 
-  // Crossing the continent's shoulder — knocked out in cream.
+  // Crossing the continent's shoulder, knocked out in cream.
   { x: 152, y: 122, scale: 0.5, rotate: -10, tone: "light" },
   { x: 196, y: 92, scale: 0.44, rotate: -18, tone: "light" },
   { x: 168, y: 168, scale: 0.42, rotate: -6, tone: "light" },

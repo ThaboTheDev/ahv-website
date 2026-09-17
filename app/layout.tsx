@@ -2,31 +2,34 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { SITE } from "@/lib/site";
+import { INSTITUTION } from "@content/global";
+
+const SITE_URL = "https://africanhiddenvoices.org";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE.url),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE.name} — ${SITE.tagline}`,
-    template: `%s · ${SITE.name}`,
+    default: `${INSTITUTION.name} · An independent research institution`,
+    template: `%s · ${INSTITUTION.abbreviation} Research Institution`,
   },
-  description: SITE.description,
+  description: INSTITUTION.description,
   keywords: [
     "African Hidden Voices",
-    "AHV",
-    "African indigenous spirituality",
-    "IImboni",
-    "African prophets",
-    "African history",
-    "Johannesburg",
+    "AHV Research Institution",
+    "African Indigenous Spirituality",
+    "AIS",
+    "Ezomoya Zakwantu",
+    "Imboni",
+    "Iimboni Database",
+    "African Indigenous Spirituality research",
   ],
   openGraph: {
     type: "website",
     locale: "en_ZA",
-    siteName: SITE.name,
-    title: `${SITE.name} — ${SITE.tagline}`,
-    description: SITE.description,
-    url: SITE.url,
+    siteName: INSTITUTION.name,
+    title: INSTITUTION.name,
+    description: INSTITUTION.description,
+    url: SITE_URL,
   },
   twitter: {
     card: "summary_large_image",
@@ -45,7 +48,7 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col antialiased">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-brand-800 focus:px-4 focus:py-2 focus:text-sm focus:text-cream"
+          className="sr-only-focusable focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:h-auto focus:w-auto focus:overflow-visible focus:rounded-sm focus:bg-brand-800 focus:px-4 focus:py-2 focus:font-mono focus:text-xs focus:text-paper focus:[clip:auto]"
         >
           Skip to content
         </a>

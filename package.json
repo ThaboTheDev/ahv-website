@@ -2,22 +2,28 @@
   "name": "ahv-website",
   "version": "1.0.0",
   "private": true,
-  "description": "African Hidden Voices — research organisation retracing the works of African indigenous spiritual leaders.",
+  "description": "African Hidden Voices (AHV) Research Institution. An independent research institution advancing African Indigenous Spirituality as a global academic discipline.",
   "scripts": {
     "dev": "next dev -H 0.0.0.0 -p 3000",
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p 3000",
+    "check:style": "node scripts/check-house-style.mjs",
+    "check:types": "tsc --noEmit",
+    "export:copy": "tsx scripts/export-copy.mjs",
+    "logo": "tsx scripts/preview-logo.mjs",
+    "africa:path": "tsx scripts/build-africa-path.mjs",
     "lint": "next lint"
   },
   "dependencies": {
-    "@fontsource-variable/cinzel": "^5.3.0",
-    "@fontsource-variable/cormorant-garamond": "^5.3.0",
-    "@fontsource-variable/inter": "^5.3.0",
     "next": "^15.5.25",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
+    "@fontsource-variable/cinzel": "^5.3.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/source-serif-4": "^5.3.0",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.6.1",
@@ -28,6 +34,7 @@
     "tailwindcss": "^4.3.3",
     "topojson-client": "^3.1.0",
     "topojson-simplify": "^3.0.3",
+    "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "world-atlas": "^2.0.2"
   }

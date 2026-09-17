@@ -1,84 +1,101 @@
 import Link from "next/link";
 import { BrandMark, Wordmark } from "@/components/Logo";
-import { CONTACT, NAV, SITE } from "@/lib/site";
+import {
+  CONTACTS,
+  FOOTER_COLUMNS,
+  INSTITUTION,
+  MOTTO,
+  STANDING_LINE,
+  UTILITY_NAV,
+} from "@content/global";
 
 export function SiteFooter() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="mt-auto bg-ink text-sand">
-      <div className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-16">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1.2fr] md:gap-12">
-          {/* Brand */}
+    <footer className="mt-auto border-t border-rule bg-ink text-rule-soft">
+      <div className="mx-auto max-w-5xl px-5 py-14 sm:px-8">
+        <div className="grid gap-12 lg:grid-cols-[1.1fr_2.2fr]">
+          {/* Identity */}
           <div>
             <div className="flex items-center gap-3">
               <BrandMark
                 idSuffix="footer"
-                className="h-14 w-auto"
+                className="h-12 w-auto"
                 title="African Hidden Voices"
               />
-              <Wordmark className="text-base font-semibold text-cream" />
+              <Wordmark className="text-[0.8125rem] font-semibold text-paper" />
             </div>
-            <p className="mt-5 max-w-xs text-sm leading-relaxed text-sand/75">
-              {SITE.tagline}
+
+            <p className="mt-5 max-w-xs font-serif text-sm leading-relaxed text-rule-soft/75">
+              {INSTITUTION.description}
             </p>
-            <div className="rule-ochre mt-6" />
+
+            <p className="mt-5 font-mono text-[0.6875rem] leading-relaxed text-rule-soft/50">
+              {INSTITUTION.registration.entityName ??
+                "Registered entity name to be confirmed"}
+              {" · "}
+              {INSTITUTION.registration.registrationNumber ??
+                "Registration number to be confirmed"}
+              {" · "}
+              {INSTITUTION.location}
+            </p>
           </div>
 
-          {/* Navigate */}
-          <nav aria-label="Footer">
-            <h2 className="eyebrow text-ochre-soft">Navigate</h2>
-            <ul className="mt-4 space-y-2.5">
-              {NAV.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-sm text-sand/80 transition-colors hover:text-cream"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {/* Link columns */}
+          <div className="grid gap-10 sm:grid-cols-3">
+            {FOOTER_COLUMNS.map((column) => (
+              <nav key={column.heading} aria-label={column.heading}>
+                <h2 className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-ochre-soft">
+                  {column.heading}
+                </h2>
+                <ul className="mt-4 space-y-2.5">
+                  {column.links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-sm text-rule-soft/80 transition-colors hover:text-paper"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
+        </div>
 
-          {/* Contact */}
+        {/* Digest and utility */}
+        <div className="mt-12 grid gap-8 border-t border-rule-soft/20 pt-8 sm:grid-cols-2">
           <div>
-            <h2 className="eyebrow text-ochre-soft">Contact</h2>
-            <address className="mt-4 space-y-3 text-sm not-italic leading-relaxed text-sand/80">
-              <p>
-                {CONTACT.addressLines.map((line) => (
-                  <span key={line} className="block">
-                    {line}
-                  </span>
-                ))}
-              </p>
-              <p>
-                <a
-                  href={CONTACT.phoneHref}
-                  className="transition-colors hover:text-cream"
-                >
-                  {CONTACT.phone}
-                </a>
-              </p>
-              <p>
-                <a
-                  href={`mailto:${CONTACT.email}`}
-                  className="break-all transition-colors hover:text-cream"
-                >
-                  {CONTACT.email}
-                </a>
-              </p>
-            </address>
+            <h2 className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-ochre-soft">
+              Research Digest
+            </h2>
+            <p className="mt-3 max-w-sm text-sm leading-relaxed text-rule-soft/75">
+              Monthly. New research, database records, and institutional notes.
+            </p>
+            <Link
+              href="/newsletter"
+              className="mt-3 inline-block font-mono text-xs text-paper underline decoration-ochre decoration-1 underline-offset-4"
+            >
+              Subscribe
+            </Link>
+          </div>
 
-            <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2">
-              {CONTACT.socials.map((social) => (
-                <li key={social.label}>
+          <div className="sm:text-right">
+            <h2 className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-ochre-soft">
+              Contact
+            </h2>
+            <ul className="mt-3 space-y-2">
+              {CONTACTS.map((contact) => (
+                <li key={contact.address} className="text-sm">
+                  <span className="text-rule-soft/50">{contact.label}: </span>
                   <a
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-sand/70 underline decoration-sand/30 underline-offset-4 transition-colors hover:text-cream hover:decoration-ochre"
+                    href={`mailto:${contact.address}`}
+                    className="break-all text-rule-soft/85 transition-colors hover:text-paper"
                   >
-                    {social.label}
+                    {contact.address}
                   </a>
                 </li>
               ))}
@@ -86,13 +103,32 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-sand/15 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-sand/55">
-            © {new Date().getFullYear()} {SITE.name}. All rights reserved.
+        {/* Utility navigation */}
+        <nav
+          aria-label="Utility"
+          className="mt-10 flex flex-wrap gap-x-6 gap-y-2 border-t border-rule-soft/20 pt-6"
+        >
+          {UTILITY_NAV.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-rule-soft/60 transition-colors hover:text-paper"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <p className="mt-8 max-w-3xl font-mono text-[0.6875rem] leading-relaxed text-rule-soft/45">
+          {STANDING_LINE}
+        </p>
+
+        <div className="mt-8 flex flex-col gap-3 border-t border-rule-soft/20 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="font-mono text-[0.6875rem] text-rule-soft/50">
+            © {year} {INSTITUTION.shortName}. All rights reserved.
           </p>
-          <p className="text-xs text-sand/55">
-            An initiative of the{" "}
-            <span className="text-sand/75">B Radebe Foundation</span>
+          <p className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-ochre-soft">
+            {MOTTO}
           </p>
         </div>
       </div>

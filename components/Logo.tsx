@@ -9,7 +9,7 @@ import { BIRD_PATH, FLOCK, BRAND_GRADIENT } from "@/lib/brand";
 export function BrandMark({
   className,
   title = "African Hidden Voices",
-  /** Unique id suffix — prevents gradient collisions when rendered twice. */
+  /** Unique id suffix, to prevent gradient collisions when rendered twice. */
   idSuffix = "default",
 }: {
   className?: string;

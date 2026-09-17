@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
 
 /**
- * Standard page section with an optional eyebrow label and heading.
- * Keeps vertical rhythm and heading markup consistent across the site.
+ * Standard page section.
+ *
+ * `tone` maps to the site's three grounds: paper (default), wash (a subtle
+ * tint used to separate blocks) and ink (the dark brand field).
  */
 export function Section({
   children,
@@ -12,7 +14,8 @@ export function Section({
   id,
   className,
   align = "left",
-  tone = "light",
+  tone = "paper",
+  size = "default",
 }: {
   children?: ReactNode;
   eyebrow?: string;
@@ -21,47 +24,48 @@ export function Section({
   id?: string;
   className?: string;
   align?: "left" | "center";
-  tone?: "light" | "parchment" | "dark";
+  tone?: "paper" | "wash" | "ink" | "none";
+  size?: "default" | "tight";
 }) {
   const toneClasses = {
-    light: "bg-cream text-ink",
-    parchment: "bg-parchment text-ink",
-    dark: "bg-ink text-sand",
+    paper: "bg-paper text-ink",
+    wash: "bg-wash text-ink",
+    ink: "bg-ink text-rule-soft",
+    none: "",
   }[tone];
 
-  const headingTone = tone === "dark" ? "text-cream" : "text-ink";
-  const introTone = tone === "dark" ? "text-sand/80" : "text-ash";
+  const headingTone = tone === "ink" ? "text-paper" : "text-ink";
+  const introTone = tone === "ink" ? "text-rule-soft/85" : "text-ash";
+  const padding =
+    size === "tight"
+      ? "px-5 py-12 sm:px-8 sm:py-14"
+      : "px-5 py-14 sm:px-8 sm:py-20";
 
   return (
     <section
       id={id}
-      className={`${toneClasses} px-5 py-16 sm:px-8 sm:py-20 lg:py-24 ${className ?? ""}`}
+      className={`${toneClasses} ${padding} ${className ?? ""}`}
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-5xl">
         {(eyebrow || title || intro) && (
           <header
-            className={`max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}
+            className={`max-w-2xl ${align === "center" ? "mx-auto text-center" : ""}`}
           >
             {eyebrow && (
-              <p className={`eyebrow ${tone === "dark" ? "text-ochre-soft" : ""}`}>
+              <p className={`eyebrow ${tone === "ink" ? "text-ochre-soft" : ""}`}>
                 {eyebrow}
               </p>
             )}
             {title && (
               <h2
-                className={`mt-3 text-3xl leading-tight sm:text-4xl lg:text-[2.75rem] ${headingTone}`}
+                className={`mt-3 text-2xl leading-tight sm:text-3xl ${headingTone}`}
               >
                 {title}
               </h2>
             )}
-            {title && (
-              <div
-                className={`rule-ochre mt-6 ${align === "center" ? "mx-auto" : ""}`}
-              />
-            )}
             {intro && (
               <div
-                className={`mt-6 text-base leading-relaxed sm:text-lg ${introTone}`}
+                className={`mt-5 text-base leading-relaxed ${introTone}`}
               >
                 {intro}
               </div>
@@ -71,5 +75,74 @@ export function Section({
         {children}
       </div>
     </section>
+  );
+}
+
+/**
+ * A two-column editorial split: a label and heading on the left, content on
+ * the right. This is the site's most-used layout.
+ */
+export function Split({
+  eyebrow,
+  title,
+  children,
+  tone = "paper",
+  id,
+}: {
+  eyebrow?: string;
+  title?: ReactNode;
+  children: ReactNode;
+  tone?: "paper" | "wash" | "ink";
+  id?: string;
+}) {
+  const headingTone = tone === "ink" ? "text-paper" : "text-ink";
+  const childrenTone = tone === "ink" ? "text-rule-soft/85" : "text-ink-soft";
+
+  return (
+    <div
+      id={id}
+      className={`grid gap-8 lg:grid-cols-[1fr_1.6fr] lg:gap-16 ${childrenTone}`}
+    >
+      <div>
+        {eyebrow && (
+          <p className={`eyebrow ${tone === "ink" ? "text-ochre-soft" : ""}`}>
+            {eyebrow}
+          </p>
+        )}
+        {title && (
+          <h2
+            className={`mt-3 text-2xl leading-tight sm:text-3xl ${headingTone}`}
+          >
+            {title}
+          </h2>
+        )}
+      </div>
+      <div>{children}</div>
+    </div>
+  );
+}
+
+/** Renders an array of paragraphs as house-style prose. */
+export function Prose({
+  paragraphs,
+  className,
+  lead = false,
+}: {
+  paragraphs: readonly string[];
+  className?: string;
+  /** Set on the first block of a page to give it a slight lift. */
+  lead?: boolean;
+}) {
+  return (
+    <div className={`prose-ahv ${className ?? ""}`}>
+      {paragraphs.map((paragraph, i) => (
+        <p
+          key={i}
+          className={lead && i === 0 ? "lead" : undefined}
+          // Copy is authored in this repository, never supplied by a visitor.
+          dangerouslySetInnerHTML={{ __html: paragraph }}
+        />
+      ))}
+    </div>
   );
 }
