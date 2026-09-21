@@ -3,6 +3,7 @@ import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { SubmissionForm } from "@/components/SubmissionForm";
 import { SUBMIT_A_VOICE } from "@content/support";
+import { INSTITUTION_EMAILS } from "@content/contacts";
 
 export const metadata: Metadata = {
   title: "Submit a Voice",
@@ -39,7 +40,7 @@ export default function SubmitVoicePage() {
             <div className="mt-8">
               <SubmissionForm
                 fields={SUBMIT_A_VOICE.fields}
-                to="database@africanhiddenvoices.org"
+                to={INSTITUTION_EMAILS.dataAnalyst}
                 subject="Iimboni Database: submission from the website"
                 submitLabel="Send to the research team"
                 assurance={SUBMIT_A_VOICE.assurance}

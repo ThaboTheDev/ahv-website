@@ -86,13 +86,13 @@ export const UTILITY_NAV: NavItem[] = [
   { label: "Support", href: "/support" },
 ];
 
-export const CONTACTS = [
-  { label: "General", address: "office@africanhiddenvoices.org" },
-  { label: "Research", address: "research@africanhiddenvoices.org" },
-  { label: "Partnerships", address: "partnerships@africanhiddenvoices.org" },
-  { label: "Press", address: "press@africanhiddenvoices.org" },
-  { label: "Database", address: "database@africanhiddenvoices.org" },
-] as const;
+/**
+ * The contact block and the social channels. Defined in contacts.ts, the
+ * single source every form and page routes through, and re-exported here so
+ * that `@content/global` stays the entry point for global elements.
+ */
+export { CONTACTS, SOCIALS, ADMIN_PHONE, INSTITUTION_EMAILS } from "./contacts";
+export type { ContactLink, SocialLink } from "./contacts";
 
 /**
  * Header ticker figures. Every figure is derived from the site's own content

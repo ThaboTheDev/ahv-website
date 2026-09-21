@@ -22,6 +22,7 @@ Cambridge University Press, 2025).
 - [The brand mark](#the-brand-mark)
 - [Routes](#routes)
 - [Forms](#forms)
+- [The fundraising panel](#the-fundraising-panel)
 - [Deployment](#deployment)
 - [Open items](#open-items)
 
@@ -95,7 +96,8 @@ edited `packages/content` rather than a page component.
 packages/
   content/               THE SOURCE OF TRUTH for all copy
     index.ts             Barrel export
-    global.ts            Institution, navigation, ticker, footer, contacts
+    global.ts            Institution, navigation, ticker, footer
+    contacts.ts          Contact routes (emails, phone) and social channels
     home.ts              Home page
     institution.ts       Institution, Framework, Founding Scholar, Record
     departments.ts       The six departments
@@ -109,6 +111,7 @@ packages/
     newsroom.ts          Announcements and research notes
     media.ts             The Dialogue Series and the Research Digest
     support.ts           Support, researcher access, submit a voice
+    fundraising.ts       The fundraising panel: tiers, triggers, payment routes
     redirects.mjs        Legacy redirects (plain JS so next.config can load it)
     HOUSE-STYLE.md       The binding terminology and mechanics rules
 
@@ -135,14 +138,17 @@ app/                     Routes, all pre-rendered
 
 components/
   Logo.tsx               BrandMark, Wordmark and the lockup
-  SiteHeader.tsx         Sticky header with primary and utility navigation
-  Ticker.tsx             "The record, as it stands", derived from content
-  SiteFooter.tsx         Identity, three link columns, contacts, standing line
+  SiteHeader.tsx         Sticky header: primary and utility navigation, Donate control, mobile Follow row
+  Ticker.tsx             "The record, as it stands", derived from content, plus the social strip
+  SiteFooter.tsx         Identity, three link columns, contacts, social channels, standing line
   Section.tsx            Section, Split and Prose layout primitives
   PageHero.tsx           Interior banner with breadcrumbs and metadata
   Source.tsx             SourceLine, Quotation and RecordField
   Cards.tsx              Department, position, lexicon and database cards
   SubmissionForm.tsx     Validated form, driven by a list of field labels
+  Fundraising.tsx        Floating support control and Subscribe/Donate dialog
+  fundraising-bus.ts     One-line event bus so the header can react to the panel
+  SocialIcons.tsx        Hand-drawn monochrome marks for the social channels
 
 lib/
   brand.ts               Bird silhouette and flock layout for the mark
@@ -318,19 +324,83 @@ that cannot be completed is worse than no link. It is also excluded in
 
 The site has no backend. `components/SubmissionForm.tsx` validates in the
 browser and then hands a structured message to the visitor's own email client,
-routed to the correct institutional address:
+routed to the correct institutional address. All addresses come from
+`packages/content/contacts.ts`, one source for the whole site:
 
 | Page | Routes to |
 | --- | --- |
-| `/database/submit` | database@africanhiddenvoices.org |
-| `/engage/universities` | partnerships@africanhiddenvoices.org |
-| `/engage/government` | partnerships@africanhiddenvoices.org |
-| `/engage/media` | press@africanhiddenvoices.org |
-| `/newsletter` | office@africanhiddenvoices.org |
+| `/database/submit` | dataanalyst@africanhiddenvoices.co.za |
+| `/engage/universities` | admin@africanhiddenvoices.co.za |
+| `/engage/government` | admin@africanhiddenvoices.co.za |
+| `/engage/media` | admin@africanhiddenvoices.co.za |
+| `/newsletter` | admin@africanhiddenvoices.co.za |
 
 To collect submissions server-side, replace the `mailto:` step with a `POST` to
 a route handler under `app/api`, or to a form provider. The validated values are
 already assembled in the `body` variable, so it is a small change.
+
+---
+
+## The fundraising panel
+
+A subscription popup and a donate control, rebuilt from the standalone AHV
+fundraising add-on onto this site's own stack: React and Tailwind, styled with
+the same design tokens as every page, with its copy and behaviour configured in
+`packages/content/fundraising.ts`.
+
+**What it is**
+
+1. A floating "Support the research" control, bottom right of every page.
+2. A dialog with two tabs. Subscribe: choose a tier, enter a name and email.
+   Donate: choose once or monthly, choose an amount, continue to payment. The
+   donate amounts carry the support page's own "what this funds" lines.
+3. It opens by itself once per visitor, on whichever comes first: fourteen
+   seconds on the page, reading 45 per cent of the way down, or the pointer
+   leaving the top of the window on desktop. A dismissal buys fourteen days of
+   quiet; a subscription, a year. It never opens by itself on `/support`,
+   `/account`, `/engage` or `/database/submit`.
+4. It is an accessible dialog: focus is held inside it, Escape closes it and
+   returns focus to the control, every field has a label, and reduced motion is
+   respected.
+
+Any control can open it with a single attribute; the `href` stays as the
+no-JavaScript fallback:
+
+```html
+<a href="/newsletter" data-ahv-open="subscribe">Subscribe</a>
+```
+
+The header and mobile-menu Donate buttons and the footer's Subscribe link are
+wired this way.
+
+**Before it takes money.** The panel does not process payments and should not;
+it sends the visitor to a hosted payment page run by the provider, which keeps
+AHV out of card-data compliance. Paystack, PayFast, Yoco or Stripe Payment
+Links all work. Two things gate it, mirroring the `/support` page's rule:
+
+- `donate.donateUrl` in `packages/content/fundraising.ts` for one-off gifts,
+  and `donate.monthlyUrl` (or a tier's `paymentUrl`) for a subscription plan.
+  While these are `null`, the panel states that payment is not connected and
+  routes visitors to the office and the support page. Nothing pretends to work.
+- The registered entity details in `SUPPORT.requiredBeforePayments`. No link
+  goes live before those are published.
+
+A `donateUrl` set as a hosted Paystack or PayFast page receives the chosen
+amount appended in cents under `amountQueryKey` (`?amount=50000` for R500).
+
+**The subscribe route.** `subscribe.subscribeEndpoint` is `null`, so the form
+uses the site's existing mail-client route. Point it at a route handler under
+`app/api` or a list provider's form URL to collect subscriptions server-side;
+the panel POSTs JSON (`email`, `name`, `tier`, `source`) before any redirect, so
+the lead is kept even if the visitor abandons the payment page.
+
+**Analytics.** Every action pushes `ahv_<name>` to the Google Tag Manager
+`dataLayer` when one is present: `open`, `close`, `dismiss`, `tab`,
+`subscribe_submit`, `subscribe_done`, `subscribe_redirect`, `donate_click`,
+`donate_redirect`.
+
+**Testing.** In the browser console: `AHVFundraising.open("donate")` opens the
+panel on demand; `AHVFundraising.reset()` clears the suppression. Then reload.
 
 ---
 
@@ -356,12 +426,15 @@ that needs an answer from the institution, not a code change.
 
 **Blocks the page taking payments:**
 
-- `/support` shows no payment route. The institutional identity details below
-  must be confirmed and published before it can, and the page says so:
-  registered entity name and registration number, NPO or PBO registration,
-  Section 18A status, physical address, receipt and refund policy, and where
-  funds are held. `INSTITUTION.registration` in `packages/content/global.ts`
-  currently renders "to be confirmed" in the footer.
+- `/support`, and with it the fundraising panel's payment links, shows no
+  payment route. The institutional identity details below must be confirmed and
+  published before either can, and both say so: registered entity name and
+  registration number, NPO or PBO registration, Section 18A status, physical
+  address, receipt and refund policy, and where funds are held.
+  `INSTITUTION.registration` in `packages/content/global.ts` currently renders
+  "to be confirmed" in the footer. Only when those are in place should the
+  `null` payment URLs in `packages/content/fundraising.ts` be replaced with the
+  provider's hosted page and plan links.
 
 **Needs confirmation:**
 
@@ -379,8 +452,10 @@ that needs an answer from the institution, not a code change.
   and how far to press *Alkebulan* in public-facing writing.
 - Research ethics policy, and the working papers in preparation.
 - Media kit assets.
-- One institutional domain, with every address routed through it. The site
-  currently uses `africanhiddenvoices.org`.
+- One institutional domain. Every contact and form route now uses
+  `africanhiddenvoices.co.za`; the canonical site URL in metadata, `robots.ts`
+  and `sitemap.ts` still reads `africanhiddenvoices.org`. Settle the domain and
+  align the three.
 
 **Not yet built:**
 
@@ -396,9 +471,12 @@ that needs an answer from the institution, not a code change.
   descriptive alternative text.
 - Visible focus rings on every interactive element.
 - The mobile menu manages `aria-expanded`, `aria-controls` and body scroll.
+- The fundraising panel is a dialog in the accessible sense: focus is held
+  inside it, Escape closes it, focus returns to the control that opened it, and
+  the auto-open policy keeps it to once per visitor.
 - Form fields use real labels, `aria-invalid` and inline error text.
 - Colour pairings target WCAG AA contrast on the dark brand field.
 - `prefers-reduced-motion` is honoured: all animation is disabled on request.
 - Fonts are self-hosted and subset, and load with `font-display: swap`.
-- Every page is pre-rendered to HTML. JavaScript ships only for the header menu
-  and the forms.
+- Every page is pre-rendered to HTML. JavaScript ships only for the header menu,
+  the forms and the fundraising panel.

@@ -68,13 +68,38 @@ An independent research institution advancing African Indigenous Spirituality as
 
 ## Contact
 
-- general: office@africanhiddenvoices.org
-- research: research@africanhiddenvoices.org
-- partnerships: partnerships@africanhiddenvoices.org
-- press: press@africanhiddenvoices.org
-- database: database@africanhiddenvoices.org
+- general: admin@africanhiddenvoices.co.za
+- database and records: dataanalyst@africanhiddenvoices.co.za
+- AHV admin: 069 058 17 26
 
-> **Outstanding:** Settle one institutional domain and route every address through it.
+> **Outstanding:** Every contact and form route now uses africanhiddenvoices.co.za. The canonical site URL in metadata, sitemap and robots still reads africanhiddenvoices.org. Settle the domain and align it.
+
+## Follow AHV
+
+- X: @african_voices, https://x.com/african_voices?s=21
+- Instagram: @african_hidden_voices, https://www.instagram.com/african_hidden_voices?stkn=MTQ0aTJiYjVuMDhnaQ==
+- TikTok: @africanhiddenvoices, https://www.tiktok.com/@africanhiddenvoices?_r=1&_t=ZS-99poM4j6IHF
+- Facebook: African Hidden Voices, https://www.facebook.com/share/1CEH19noY2/?mibextid=wwXIfr
+
+The links render in the footer of every page, and in the header as an icon strip at the right end of the ticker bar from the small breakpoint up; below it the strip steps out of the scrolling figures' way and the mobile menu carries the same four as a Follow row of chips. The Dialogue Series keeps its own home on the Media page; YouTube stays there rather than in these rows.
+
+## The support panel
+
+A floating "Support the research" control sits bottom right on every page and opens a Subscribe/Donate dialog. The dialog also opens by itself once per visitor, on whichever of three triggers comes first: fourteen seconds on the page, reading 45 per cent of the way down, or the pointer leaving the top of the window on desktop. After a dismissal it stays quiet for fourteen days; after a subscription, for a year. It never opens by itself on /support, /account, /engage or /database/submit, where the visitor is already doing the thing it would ask for. Any element carrying data-ahv-open opens it on the named tab, and the header Donate button does exactly that.
+
+- Subscribe: two options at present, the Research Digest and institutional access for collaboration and AHV research data. Choose a tier and leave a name and email.
+- Donate: choose once or monthly and an amount. The amount carries the support page's own "what this funds" lines.
+
+Payment state, stated plainly rather than simulated:
+
+- Subscribe, the only two options for now: Research Digest, R50 per month, the lowest subscription and the entry to the monthly record (payment link pending). Institutional, R1 500 per month, for institutions that wish to collaborate with AHV or work with its research data (payment link pending).
+- Donate: the panel says payment is not connected until the registered entity details under Institutional identity above are published, and routes support to the office in the meantime. Nothing pretends to charge.
+
+Legal footer of the panel:
+
+> African Hidden Voices (AHV) Research Institution, Johannesburg. Registered entity details, NPO or PBO number and section 18A status are to be confirmed before the panel takes a payment.
+
+The behaviour is configured in packages/content/fundraising.ts and rendered by components/Fundraising.tsx. It is a dialog in the accessible sense: focus is held inside it, Escape closes it and returns focus to the control, every field has a label, and the reduced-motion preference collapses its animations.
 
 ## Redirects from the old site
 

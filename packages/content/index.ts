@@ -20,3 +20,4 @@ export * from "./engage";
 export * from "./newsroom";
 export * from "./media";
 export * from "./support";
+export * from "./fundraising";

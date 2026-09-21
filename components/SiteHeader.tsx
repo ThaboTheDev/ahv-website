@@ -4,8 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/Logo";
+import { SocialIcon } from "@/components/SocialIcons";
 import { Ticker } from "@/components/Ticker";
-import { PRIMARY_NAV, UTILITY_NAV } from "@content/global";
+import { FUNDRAISE_OPEN_EVENT, fundraiseBus } from "@/components/fundraising-bus";
+import { PRIMARY_NAV, SOCIALS, UTILITY_NAV } from "@content/global";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -16,6 +18,14 @@ export function SiteHeader() {
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  // And when the fundraising panel opens from a control inside this header:
+  // the panel intercepts that click before React handlers run.
+  useEffect(() => {
+    const onPanelOpen = () => setOpen(false);
+    fundraiseBus.addEventListener(FUNDRAISE_OPEN_EVENT, onPanelOpen);
+    return () => fundraiseBus.removeEventListener(FUNDRAISE_OPEN_EVENT, onPanelOpen);
+  }, []);
 
   // Elevate the header once the page has scrolled past the ticker.
   useEffect(() => {
@@ -80,6 +90,16 @@ export function SiteHeader() {
             </ul>
           </nav>
 
+          {/* Support control. data-ahv-open is intercepted by the panel; the
+              Donate route doubles as the destination without JavaScript. */}
+          <button
+            type="button"
+            data-ahv-open="donate"
+            className="hidden shrink-0 border border-brand-900/40 bg-brand-800 px-3.5 py-2 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-paper transition-colors hover:bg-brand-900 xl:inline-flex"
+          >
+            Donate
+          </button>
+
           {/* Mobile and tablet toggle */}
           <button
             type="button"
@@ -114,7 +134,7 @@ export function SiteHeader() {
       <div
         id="site-menu"
         hidden={!open}
-        className="max-h-[calc(100vh-6rem)] overflow-y-auto border-b border-rule bg-paper xl:hidden"
+        className="max-h-[calc(100vh-7.5rem)] overflow-y-auto border-b border-rule bg-paper xl:hidden"
       >
         <nav aria-label="Mobile" className="mx-auto max-w-5xl px-5 py-5 sm:px-8">
           <ul className="divide-y divide-rule-soft">
@@ -146,6 +166,34 @@ export function SiteHeader() {
               </li>
             ))}
           </ul>
+
+          <p className="eyebrow mt-6">Follow</p>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {SOCIALS.map((social) => (
+              <li key={social.href}>
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={social.handle}
+                  className="inline-flex items-center gap-2 border border-rule bg-paper px-3 py-2 font-mono text-xs text-ink-soft transition-colors hover:border-brand-300 hover:text-brand-800"
+                >
+                  <SocialIcon name={social.label} className="h-3 w-3" />
+                  {social.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-6 border-t border-rule pt-5">
+            <button
+              type="button"
+              data-ahv-open="donate"
+              className="w-full bg-brand-800 px-4 py-3 font-mono text-xs uppercase tracking-[0.14em] text-paper transition-colors hover:bg-brand-900"
+            >
+              Donate
+            </button>
+          </div>
         </nav>
       </div>
     </header>

@@ -169,6 +169,31 @@
   --color-ochre: #a67c2e;
   --color-ochre-soft: #e6d9b8;
   --color-verdigris: #2f6b60;
+
+  /* Fundraising panel entrances. The reduced-motion rule at the foot of
+     this stylesheet collapses both to an instant. */
+  --animate-ahv-backdrop: ahv-backdrop 160ms ease-out both;
+  --animate-ahv-panel: ahv-panel 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes ahv-backdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ahv-panel {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @layer base {
