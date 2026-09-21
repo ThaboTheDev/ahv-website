@@ -3,6 +3,7 @@ import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { SubmissionForm } from "@/components/SubmissionForm";
 import { RESEARCH_DIGEST } from "@content/media";
+import { INSTITUTION_EMAILS } from "@content/contacts";
 
 export const metadata: Metadata = {
   title: "The Research Digest",
@@ -61,7 +62,7 @@ export default function NewsletterPage() {
               <div className="mt-6">
                 <SubmissionForm
                   fields={["Your name", "Email"]}
-                  to="office@africanhiddenvoices.org"
+                  to={INSTITUTION_EMAILS.admin}
                   subject="Research Digest: subscribe"
                   submitLabel="Subscribe"
                 />

@@ -1,5 +1,7 @@
 /** Engagement: academic partnership, government and policy, and media. */
 
+import { INSTITUTION_EMAILS } from "./contacts";
+
 export interface EngageChannel {
   slug: string;
   title: string;
@@ -37,7 +39,7 @@ export const ENGAGE_CHANNELS: EngageChannel[] = [
       "Nature of the proposal",
       "Timeline",
     ],
-    routesTo: "partnerships@africanhiddenvoices.org",
+    routesTo: INSTITUTION_EMAILS.admin,
   },
   {
     slug: "government",
@@ -48,7 +50,7 @@ export const ENGAGE_CHANNELS: EngageChannel[] = [
       "Advisory work on the recognition of spirituality as a distinct category in law and policy, on the position of spiritual authority alongside traditional leadership, on indigenous knowledge policy, and on heritage and site custodianship.",
     ],
     fields: ["Body", "Portfolio", "Your name", "Email", "The question at issue"],
-    routesTo: "partnerships@africanhiddenvoices.org",
+    routesTo: INSTITUTION_EMAILS.admin,
   },
   {
     slug: "media",
@@ -67,7 +69,7 @@ export const ENGAGE_CHANNELS: EngageChannel[] = [
       "Audience",
       "Subject",
     ],
-    routesTo: "press@africanhiddenvoices.org",
+    routesTo: INSTITUTION_EMAILS.admin,
   },
 ];
 

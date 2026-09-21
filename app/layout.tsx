@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Fundraising } from "@/components/Fundraising";
 import { INSTITUTION } from "@content/global";
 
 const SITE_URL = "https://africanhiddenvoices.org";
@@ -57,6 +58,7 @@ export default function RootLayout({
           {children}
         </main>
         <SiteFooter />
+        <Fundraising />
       </body>
     </html>
   );

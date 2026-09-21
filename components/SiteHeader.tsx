@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/Logo";
 import { Ticker } from "@/components/Ticker";
+import { FUNDRAISE_OPEN_EVENT, fundraiseBus } from "@/components/fundraising-bus";
 import { PRIMARY_NAV, UTILITY_NAV } from "@content/global";
 
 export function SiteHeader() {
@@ -16,6 +17,14 @@ export function SiteHeader() {
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  // And when the fundraising panel opens from a control inside this header:
+  // the panel intercepts that click before React handlers run.
+  useEffect(() => {
+    const onPanelOpen = () => setOpen(false);
+    fundraiseBus.addEventListener(FUNDRAISE_OPEN_EVENT, onPanelOpen);
+    return () => fundraiseBus.removeEventListener(FUNDRAISE_OPEN_EVENT, onPanelOpen);
+  }, []);
 
   // Elevate the header once the page has scrolled past the ticker.
   useEffect(() => {
@@ -79,6 +88,16 @@ export function SiteHeader() {
               ))}
             </ul>
           </nav>
+
+          {/* Support control. data-ahv-open is intercepted by the panel; the
+              Donate route doubles as the destination without JavaScript. */}
+          <button
+            type="button"
+            data-ahv-open="donate"
+            className="hidden shrink-0 border border-brand-900/40 bg-brand-800 px-3.5 py-2 font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-paper transition-colors hover:bg-brand-900 xl:inline-flex"
+          >
+            Donate
+          </button>
 
           {/* Mobile and tablet toggle */}
           <button
@@ -146,6 +165,16 @@ export function SiteHeader() {
               </li>
             ))}
           </ul>
+
+          <div className="mt-6 border-t border-rule pt-5">
+            <button
+              type="button"
+              data-ahv-open="donate"
+              className="w-full bg-brand-800 px-4 py-3 font-mono text-xs uppercase tracking-[0.14em] text-paper transition-colors hover:bg-brand-900"
+            >
+              Donate
+            </button>
+          </div>
         </nav>
       </div>
     </header>

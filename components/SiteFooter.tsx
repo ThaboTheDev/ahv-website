@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { BrandMark, Wordmark } from "@/components/Logo";
+import { SocialIcon } from "@/components/SocialIcons";
 import {
   CONTACTS,
   FOOTER_COLUMNS,
   INSTITUTION,
   MOTTO,
+  SOCIALS,
   STANDING_LINE,
   UTILITY_NAV,
 } from "@content/global";
@@ -66,8 +68,8 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* Digest and utility */}
-        <div className="mt-12 grid gap-8 border-t border-rule-soft/20 pt-8 sm:grid-cols-2">
+        {/* Digest, contact and channels */}
+        <div className="mt-12 grid gap-8 border-t border-rule-soft/20 pt-8 lg:grid-cols-3">
           <div>
             <h2 className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-ochre-soft">
               Research Digest
@@ -75,27 +77,57 @@ export function SiteFooter() {
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-rule-soft/75">
               Monthly. New research, database records, and institutional notes.
             </p>
-            <Link
+            {/* The panel intercepts this click and opens on the subscribe tab;
+                the href remains for visitors without JavaScript. */}
+            <a
               href="/newsletter"
+              data-ahv-open="subscribe"
               className="mt-3 inline-block font-mono text-xs text-paper underline decoration-ochre decoration-1 underline-offset-4"
             >
               Subscribe
-            </Link>
+            </a>
           </div>
 
-          <div className="sm:text-right">
+          <div>
             <h2 className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-ochre-soft">
               Contact
             </h2>
             <ul className="mt-3 space-y-2">
               {CONTACTS.map((contact) => (
-                <li key={contact.address} className="text-sm">
+                <li key={contact.href} className="text-sm">
                   <span className="text-rule-soft/50">{contact.label}: </span>
                   <a
-                    href={`mailto:${contact.address}`}
+                    href={contact.href}
                     className="break-all text-rule-soft/85 transition-colors hover:text-paper"
                   >
-                    {contact.address}
+                    {contact.display}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="lg:text-right">
+            <h2 className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-ochre-soft">
+              Follow AHV
+            </h2>
+            <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 lg:justify-end">
+              {SOCIALS.map((social) => (
+                <li key={social.href}>
+                  <a
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-1.5 text-sm text-rule-soft/80 transition-colors hover:text-paper"
+                    title={`${social.label}: ${social.handle}`}
+                  >
+                    <SocialIcon
+                      name={social.label}
+                      className="h-3 w-3 shrink-0 text-rule-soft/60 transition-colors group-hover:text-ochre-soft"
+                    />
+                    <span className="border-b border-transparent pb-px transition-colors group-hover:border-ochre group-hover:text-paper">
+                      {social.label}
+                    </span>
                   </a>
                 </li>
               ))}

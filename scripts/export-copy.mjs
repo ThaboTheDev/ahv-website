@@ -21,6 +21,8 @@ const {
   PRIMARY_NAV,
   UTILITY_NAV,
   CONTACTS,
+  SOCIALS,
+  FUNDRAISING,
   MOTTO,
   LEGACY_REDIRECTS,
   tickerFigures,
@@ -107,9 +109,59 @@ p(
 );
 h(2, "Contact");
 for (const contact of CONTACTS) {
-  out.push(`- ${contact.label}: ${contact.address}`);
+  out.push(`- ${contact.label}: ${contact.display} (\`${contact.href}\`)`);
 }
 out.push("");
+h(2, "Follow AHV");
+for (const social of SOCIALS) {
+  out.push(`- ${social.label}: ${social.handle}, ${social.href}`);
+}
+out.push("");
+h(2, "The support panel");
+p(
+  "A floating control on every page, and a Subscribe/Donate dialog that opens by itself once per visitor, then stays quiet. Rendered by components/Fundraising.tsx from packages/content/fundraising.ts.",
+);
+label(
+  "Floating control",
+  FUNDRAISING.floatingButton.enabled
+    ? `"${FUNDRAISING.floatingButton.label}"`
+    : "not shown",
+);
+label(
+  "Auto-open",
+  FUNDRAISING.autoOpen.enabled
+    ? `whichever of ${FUNDRAISING.autoOpen.delayMs / 1000} seconds on the page, reading ${FUNDRAISING.autoOpen.scrollPercent} per cent down, or pointer exit at the top of the window comes first; the ${FUNDRAISING.autoOpen.defaultTab} tab is shown; quiet for ${FUNDRAISING.autoOpen.suppressAfterDismissDays} days after a dismissal and ${FUNDRAISING.autoOpen.suppressAfterSubscribeDays} days after a subscription; never on ${FUNDRAISING.autoOpen.excludePaths.join(", ")}`
+    : "not active",
+);
+h(3, "Subscribe");
+p(FUNDRAISING.subscribe.body);
+for (const tier of [
+  ...FUNDRAISING.subscribe.tiers,
+  FUNDRAISING.subscribe.digestOnly,
+]) {
+  out.push(
+    tier.amount > 0
+      ? `- **${tier.name}, R${tier.amount.toLocaleString("en-ZA").replace(/,/g, " ")} per month.** ${tier.blurb}${tier.paymentUrl ? "" : " (payment link pending)"}`
+      : `- **${tier.name}.** ${tier.blurb}`,
+  );
+}
+out.push("");
+h(3, "Donate");
+p(FUNDRAISING.donate.body);
+p(
+  FUNDRAISING.donate.donateUrl
+    ? `Payment page: ${FUNDRAISING.donate.donateUrl}`
+    : "Payment is not connected yet: the panel says so plainly and routes support through the office until the registered entity details are published.",
+);
+bullets(
+  FUNDRAISING.donate.amounts.map(
+    (option) =>
+      `**R${option.amount.toLocaleString("en-ZA").replace(/,/g, " ")}.** ${option.funds}`,
+  ),
+);
+h(3, "Legal footer");
+p(FUNDRAISING.legal.note);
+
 h(2, "Redirects from the old site");
 for (const redirect of LEGACY_REDIRECTS) {
   out.push(`- \`${redirect.source}\` → \`${redirect.destination}\``);

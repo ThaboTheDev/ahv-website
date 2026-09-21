@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { RESEARCHER_ACCESS as RA } from "@content/support";
+import { INSTITUTION_EMAILS } from "@content/contacts";
 
 export const metadata: Metadata = {
   title: "Researcher Access",
@@ -89,8 +90,8 @@ export default function ResearcherAccessPage() {
             deliberately not linked from the navigation until registration
             opens. Named researchers and community members who need material
             now should write to{" "}
-            <a href="mailto:research@africanhiddenvoices.org" className="link-brand">
-              research@africanhiddenvoices.org
+            <a href={`mailto:${INSTITUTION_EMAILS.dataAnalyst}`} className="link-brand">
+              {INSTITUTION_EMAILS.dataAnalyst}
             </a>
             .
           </p>

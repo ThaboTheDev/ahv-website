@@ -3,6 +3,7 @@ import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { Quotation } from "@/components/Source";
 import { SUPPORT } from "@content/support";
+import { INSTITUTION_EMAILS } from "@content/contacts";
 
 export const metadata: Metadata = {
   title: "Support the Research",
@@ -91,10 +92,10 @@ export default function SupportPage() {
                 {SUPPORT.majorGiving.body}
               </p>
               <a
-                href="mailto:office@africanhiddenvoices.org"
+                href={`mailto:${INSTITUTION_EMAILS.admin}`}
                 className="link-brand mt-4 inline-block font-mono text-xs"
               >
-                office@africanhiddenvoices.org
+                {INSTITUTION_EMAILS.admin}
               </a>
             </div>
           </aside>

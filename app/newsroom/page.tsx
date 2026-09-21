@@ -9,6 +9,7 @@ import {
   NEWSROOM_LEDE,
   RESEARCH_NOTES_NOTE,
 } from "@content/newsroom";
+import { INSTITUTION_EMAILS } from "@content/contacts";
 
 export const metadata: Metadata = {
   title: "Newsroom",
@@ -110,8 +111,8 @@ export default function NewsroomPage() {
           </ul>
           <p className="mt-6 font-mono text-xs text-ash">
             Press enquiries:{" "}
-            <a href="mailto:press@africanhiddenvoices.org" className="link-brand">
-              press@africanhiddenvoices.org
+            <a href={`mailto:${INSTITUTION_EMAILS.admin}`} className="link-brand">
+              {INSTITUTION_EMAILS.admin}
             </a>
           </p>
         </div>
