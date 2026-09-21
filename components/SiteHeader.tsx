@@ -134,7 +134,7 @@ export function SiteHeader() {
       <div
         id="site-menu"
         hidden={!open}
-        className="max-h-[calc(100vh-6rem)] overflow-y-auto border-b border-rule bg-paper xl:hidden"
+        className="max-h-[calc(100vh-7.5rem)] overflow-y-auto border-b border-rule bg-paper xl:hidden"
       >
         <nav aria-label="Mobile" className="mx-auto max-w-5xl px-5 py-5 sm:px-8">
           <ul className="divide-y divide-rule-soft">
@@ -168,7 +168,7 @@ export function SiteHeader() {
           </ul>
 
           <p className="eyebrow mt-6">Follow</p>
-          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+          <ul className="mt-3 flex flex-wrap gap-2">
             {SOCIALS.map((social) => (
               <li key={social.href}>
                 <a
@@ -176,7 +176,7 @@ export function SiteHeader() {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={social.handle}
-                  className="inline-flex items-center gap-2 font-mono text-xs text-ash transition-colors hover:text-brand-700"
+                  className="inline-flex items-center gap-2 border border-rule bg-paper px-3 py-2 font-mono text-xs text-ink-soft transition-colors hover:border-brand-300 hover:text-brand-800"
                 >
                   <SocialIcon name={social.label} className="h-3 w-3" />
                   {social.label}
