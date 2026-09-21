@@ -87,12 +87,12 @@ The links render in the footer of every page. The Dialogue Series keeps its own 
 
 A floating "Support the research" control sits bottom right on every page and opens a Subscribe/Donate dialog. The dialog also opens by itself once per visitor, on whichever of three triggers comes first: fourteen seconds on the page, reading 45 per cent of the way down, or the pointer leaving the top of the window on desktop. After a dismissal it stays quiet for fourteen days; after a subscription, for a year. It never opens by itself on /support, /account, /engage or /database/submit, where the visitor is already doing the thing it would ask for. Any element carrying data-ahv-open opens it on the named tab, and the header Donate button does exactly that.
 
-- Subscribe: choose a tier and leave a name and email. The Research Digest reaches subscribers from its first issue.
+- Subscribe: two options at present, the Research Digest and institutional access for collaboration and AHV research data. Choose a tier and leave a name and email.
 - Donate: choose once or monthly and an amount. The amount carries the support page's own "what this funds" lines.
 
 Payment state, stated plainly rather than simulated:
 
-- Subscribe: Reader, R100 per month, funds one new Iimboni Database record each month (payment link pending). Patron, R500 per month, funds the transcription and translation of an oral testimony each month (payment link pending). Benefactor, R1 000 per month, funds a month of database hosting and maintenance (payment link pending). The Research Digest itself, at no cost.
+- Subscribe, the only two options for now: Research Digest, R50 per month, the lowest subscription and the entry to the monthly record (payment link pending). Institutional, R1 500 per month, for institutions that wish to collaborate with AHV or work with its research data (payment link pending).
 - Donate: the panel says payment is not connected until the registered entity details under Institutional identity above are published, and routes support to the office in the meantime. Nothing pretends to charge.
 
 Legal footer of the panel:

@@ -135,14 +135,9 @@ label(
 );
 h(3, "Subscribe");
 p(FUNDRAISING.subscribe.body);
-for (const tier of [
-  ...FUNDRAISING.subscribe.tiers,
-  FUNDRAISING.subscribe.digestOnly,
-]) {
+for (const tier of FUNDRAISING.subscribe.tiers) {
   out.push(
-    tier.amount > 0
-      ? `- **${tier.name}, R${tier.amount.toLocaleString("en-ZA").replace(/,/g, " ")} per month.** ${tier.blurb}${tier.paymentUrl ? "" : " (payment link pending)"}`
-      : `- **${tier.name}.** ${tier.blurb}`,
+    `- **${tier.name}, R${tier.amount.toLocaleString("en-ZA").replace(/,/g, " ")} per month.** ${tier.blurb}${tier.paymentUrl ? "" : " (payment link pending)"}`,
   );
 }
 out.push("");

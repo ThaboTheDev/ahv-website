@@ -137,7 +137,7 @@ export function Fundraising() {
   const [openTab, setOpenTab] = useState<FundraisingTab | null>(null);
 
   // Subscribe form state.
-  const [tierId, setTierId] = useState<string>(SUBSCRIBE.digestOnly.id);
+  const [tierId, setTierId] = useState<string>(SUBSCRIBE.tiers[0].id);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState<Errors>({});
@@ -315,8 +315,7 @@ export function Fundraising() {
   }, [openPanel, closePanel]);
 
   const selectedTier =
-    [...SUBSCRIBE.tiers, SUBSCRIBE.digestOnly].find((tier) => tier.id === tierId) ??
-    SUBSCRIBE.digestOnly;
+    SUBSCRIBE.tiers.find((tier) => tier.id === tierId) ?? SUBSCRIBE.tiers[0];
 
   function handleSubscribe(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -348,10 +347,7 @@ export function Fundraising() {
     } else {
       // No backend yet, as elsewhere on this site: validate in the browser
       // and hand a structured message to the visitor's own mail client.
-      const tierLine =
-        selectedTier.amount > 0
-          ? `Tier: ${selectedTier.name} (${money(selectedTier.amount, "monthly")})`
-          : "Tier: Research Digest only";
+      const tierLine = `Tier: ${selectedTier.name} (${money(selectedTier.amount, "monthly")})`;
       const body = [
         `${SUBSCRIBE.nameField}: ${name.trim()}`,
         `${SUBSCRIBE.emailField}: ${email.trim()}`,
@@ -506,11 +502,9 @@ export function Fundraising() {
                     <p className="mt-2 font-serif text-[0.9375rem] leading-relaxed text-ink-soft">
                       {SUBSCRIBE.thanks.body}
                     </p>
-                    {selectedTier.amount > 0 && (
-                      <p className="mt-3 font-serif text-[0.9375rem] leading-relaxed text-ink-soft">
-                        {SUBSCRIBE.thanks.tierNote}
-                      </p>
-                    )}
+                    <p className="mt-3 font-serif text-[0.9375rem] leading-relaxed text-ink-soft">
+                      {SUBSCRIBE.thanks.tierNote}
+                    </p>
                     {selectedTier.paymentUrl && (
                       <a
                         href={selectedTier.paymentUrl}
@@ -549,7 +543,7 @@ export function Fundraising() {
                         Choose a tier
                       </legend>
                       <div className="mt-3 space-y-px">
-                        {[...SUBSCRIBE.tiers, SUBSCRIBE.digestOnly].map((tier) => (
+                        {SUBSCRIBE.tiers.map((tier) => (
                           <TierRow
                             key={tier.id}
                             tier={tier}
@@ -844,12 +838,10 @@ function TierRow({
       <span className="min-w-0 flex-1">
         <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span className="font-serif text-[1rem] font-semibold text-ink">{tier.name}</span>
-          {tier.amount > 0 && (
-            <span className="font-mono text-xs font-semibold text-brand-700">
-              {money(tier.amount, "monthly")}
-            </span>
-          )}
-          {tier.amount > 0 && !tier.paymentUrl && (
+          <span className="font-mono text-xs font-semibold text-brand-700">
+            {money(tier.amount, "monthly")}
+          </span>
+          {!tier.paymentUrl && (
             <span className="border border-ochre-soft bg-ochre-soft/25 px-1.5 py-0.5 font-mono text-[0.5625rem] uppercase tracking-[0.12em] text-ochre">
               {pendingLabel}
             </span>

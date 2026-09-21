@@ -89,38 +89,25 @@ export const FUNDRAISING = {
     eyebrow: "Subscribe",
     title: "The record, monthly, with your support attached",
     body:
-      "Choose a supporter tier and leave your name and email. The Research Digest reaches subscribers from its first issue.",
+      "Two subscription options at present: the Research Digest, and institutional access for collaboration and AHV research data. Choose a tier and leave your name and email.",
+    /** The only two options for now, per the institution's direction. */
     tiers: [
       {
-        id: "reader",
-        name: "Reader",
-        amount: 100,
-        blurb: "Funds one new Iimboni Database record each month",
+        id: "digest",
+        name: "Research Digest",
+        amount: 50,
+        blurb: "New research, database records and institutional notes, monthly",
         paymentUrl: null,
       },
       {
-        id: "patron",
-        name: "Patron",
-        amount: 500,
-        blurb: "Funds the transcription and translation of an oral testimony each month",
-        paymentUrl: null,
-      },
-      {
-        id: "benefactor",
-        name: "Benefactor",
-        amount: 1000,
-        blurb: "Funds a month of database hosting and maintenance",
+        id: "institutional",
+        name: "Institutional",
+        amount: 1500,
+        blurb:
+          "For institutions that wish to collaborate with AHV or work with its research data",
         paymentUrl: null,
       },
     ] satisfies SupporterTier[],
-    /** The no-tier option: the digest on its own. */
-    digestOnly: {
-      id: "digest",
-      name: "The Research Digest",
-      amount: 0,
-      blurb: "Monthly new research, database records and institutional notes, at no cost",
-      paymentUrl: null,
-    } satisfies SupporterTier,
     /** A JSON POST target, or null for the mail-client route. */
     subscribeEndpoint: null as string | null,
     nameField: "Your name",
