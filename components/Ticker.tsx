@@ -1,11 +1,14 @@
 import Link from "next/link";
-import { tickerFigures } from "@content/global";
+import { SOCIALS, tickerFigures } from "@content/global";
+import { SocialIcon } from "@/components/SocialIcons";
 
 /**
  * The header ticker: "The record, as it stands".
  *
  * Every figure is derived from the site's own content by tickerFigures(),
- * never typed by hand, and each links to the page that proves it.
+ * never typed by hand, and each links to the page that proves it. The social
+ * strip closes the line: the institution's own channels, kept at the same
+ * quiet weight as the figures beside them.
  */
 export function Ticker() {
   const figures = tickerFigures();
@@ -35,6 +38,27 @@ export function Ticker() {
             </li>
           ))}
         </ul>
+
+        {/* The social strip. Icons carry the handles on hover and to
+            assistive technology; the row never competes with the figures. */}
+        <nav
+          aria-label="AHV social channels"
+          className="-my-0.5 flex shrink-0 items-center border-l border-rule-soft/25 pl-3"
+        >
+          {SOCIALS.map((social) => (
+            <a
+              key={social.href}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`${social.label}: ${social.handle}`}
+              aria-label={`${social.label}: ${social.handle}`}
+              className="grid h-7 w-7 place-items-center rounded-sm text-rule-soft/55 transition-colors hover:text-ochre-soft"
+            >
+              <SocialIcon name={social.label} className="h-3 w-3" />
+            </a>
+          ))}
+        </nav>
       </div>
     </div>
   );

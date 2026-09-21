@@ -81,7 +81,7 @@ An independent research institution advancing African Indigenous Spirituality as
 - TikTok: @africanhiddenvoices, https://www.tiktok.com/@africanhiddenvoices?_r=1&_t=ZS-99poM4j6IHF
 - Facebook: African Hidden Voices, https://www.facebook.com/share/1CEH19noY2/?mibextid=wwXIfr
 
-The links render in the footer of every page. The Dialogue Series keeps its own home on the Media page; YouTube stays there rather than in this row.
+The links render in the footer of every page and as a quiet icon strip at the right end of the header ticker; the mobile menu carries the same four as a text row. The Dialogue Series keeps its own home on the Media page; YouTube stays there rather than in these rows.
 
 ## The support panel
 

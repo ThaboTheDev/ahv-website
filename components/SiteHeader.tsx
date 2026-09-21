@@ -4,9 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/Logo";
+import { SocialIcon } from "@/components/SocialIcons";
 import { Ticker } from "@/components/Ticker";
 import { FUNDRAISE_OPEN_EVENT, fundraiseBus } from "@/components/fundraising-bus";
-import { PRIMARY_NAV, UTILITY_NAV } from "@content/global";
+import { PRIMARY_NAV, SOCIALS, UTILITY_NAV } from "@content/global";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -162,6 +163,24 @@ export function SiteHeader() {
                 >
                   {item.label}
                 </Link>
+              </li>
+            ))}
+          </ul>
+
+          <p className="eyebrow mt-6">Follow</p>
+          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+            {SOCIALS.map((social) => (
+              <li key={social.href}>
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={social.handle}
+                  className="inline-flex items-center gap-2 font-mono text-xs text-ash transition-colors hover:text-brand-700"
+                >
+                  <SocialIcon name={social.label} className="h-3 w-3" />
+                  {social.label}
+                </a>
               </li>
             ))}
           </ul>

@@ -138,8 +138,8 @@ app/                     Routes, all pre-rendered
 
 components/
   Logo.tsx               BrandMark, Wordmark and the lockup
-  SiteHeader.tsx         Sticky header with primary and utility navigation
-  Ticker.tsx             "The record, as it stands", derived from content
+  SiteHeader.tsx         Sticky header: primary and utility navigation, Donate control, mobile Follow row
+  Ticker.tsx             "The record, as it stands", derived from content, plus the social strip
   SiteFooter.tsx         Identity, three link columns, contacts, social channels, standing line
   Section.tsx            Section, Split and Prose layout primitives
   PageHero.tsx           Interior banner with breadcrumbs and metadata
