@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { LexiconCard } from "@/components/Cards";
 import { LEXICON } from "@content/lexicon";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "The Lexicon",
   description:
     "The restored vocabulary of African Indigenous Spirituality, defined from within.",
-};
+  path: "/lexicon",
+});
 
 export default function LexiconPage() {
   const pending = LEXICON.filter((entry) => entry.confirmationPending).length;

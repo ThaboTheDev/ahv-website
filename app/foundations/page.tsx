@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { FOUNDATIONS } from "@content/foundations";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Foundations",
   description:
     "Where to begin, for readers new to African Indigenous Spirituality.",
-};
+  path: "/foundations",
+});
 
 export default function FoundationsPage() {
   return (

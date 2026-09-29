@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { BrandMark } from "@/components/Logo";
+import { JsonLd } from "@/components/JsonLd";
+import { breadcrumbSchema } from "@/lib/structured-data";
 
 export interface Crumb {
   label: string;
@@ -42,6 +44,7 @@ export function PageHero({
       <div className="relative mx-auto max-w-5xl px-5 py-12 sm:px-8 sm:py-16">
         {crumbs && crumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="mb-8">
+            <JsonLd data={breadcrumbSchema(crumbs)} />
             <ol className="flex flex-wrap items-center gap-2 font-mono text-[0.6875rem] text-rule-soft/55">
               {crumbs.map((crumb, i) => (
                 <li key={crumb.label} className="flex items-center gap-2">

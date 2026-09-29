@@ -2,10 +2,7 @@ import type { MetadataRoute } from "next";
 import { PRIMARY_NAV, UTILITY_NAV } from "@content/global";
 import { DEPARTMENTS } from "@content/departments";
 import { ENGAGE_CHANNELS } from "@content/engage";
-import { POSITIONS } from "@content/positions";
-import { LEXICON } from "@content/lexicon";
-
-const SITE_URL = "https://africanhiddenvoices.org";
+import { absoluteUrl } from "@/lib/site";
 
 const INSTITUTION_PAGES = [
   "/institution/framework",
@@ -13,39 +10,46 @@ const INSTITUTION_PAGES = [
   "/institution/record",
 ];
 
-const RESEARCH_PAGES = ["/database/method", "/database/submit", "/lexicon"];
+const RESEARCH_PAGES = ["/database/method", "/database/submit"];
 
+/**
+ * Every indexable page, once.
+ *
+ * Positions and lexicon entries are anchors on their index pages, not pages
+ * of their own, so they are not listed: search engines ignore URL fragments
+ * and would read them as duplicates of the index URL.
+ *
+ * `lastModified` is left out on purpose. Nothing here tracks when a page last
+ * changed, and a date that is always "now" teaches crawlers to ignore the
+ * field. Add it if page dates are ever recorded in the content package.
+ *
+ * `/account` is excluded because it is noindex.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
-
-  const fixed = [
-    { url: SITE_URL, priority: 1 },
-    ...PRIMARY_NAV.map((item) => ({ url: `${SITE_URL}${item.href}`, priority: 0.9 })),
-    ...UTILITY_NAV.map((item) => ({ url: `${SITE_URL}${item.href}`, priority: 0.7 })),
-    ...INSTITUTION_PAGES.map((href) => ({ url: `${SITE_URL}${href}`, priority: 0.8 })),
-    ...RESEARCH_PAGES.map((href) => ({ url: `${SITE_URL}${href}`, priority: 0.7 })),
-    ...DEPARTMENTS.map((department) => ({
-      url: `${SITE_URL}/departments/${department.slug}`,
+  const entries: { path: string; priority: number }[] = [
+    { path: "/", priority: 1 },
+    ...PRIMARY_NAV.map((item) => ({ path: item.href, priority: 0.9 })),
+    ...DEPARTMENTS.map((d) => ({
+      path: `/departments/${d.slug}`,
       priority: 0.9,
     })),
-    ...ENGAGE_CHANNELS.map((channel) => ({
-      url: `${SITE_URL}/engage/${channel.slug}`,
+    ...INSTITUTION_PAGES.map((path) => ({ path, priority: 0.8 })),
+    ...UTILITY_NAV.map((item) => ({ path: item.href, priority: 0.7 })),
+    { path: "/lexicon", priority: 0.7 },
+    ...RESEARCH_PAGES.map((path) => ({ path, priority: 0.7 })),
+    ...ENGAGE_CHANNELS.map((c) => ({
+      path: `/engage/${c.slug}`,
       priority: 0.7,
-    })),
-    ...POSITIONS.map((position) => ({
-      url: `${SITE_URL}/positions#${position.slug}`,
-      priority: 0.5,
-    })),
-    ...LEXICON.map((entry) => ({
-      url: `${SITE_URL}/lexicon#${entry.slug}`,
-      priority: 0.5,
     })),
   ];
 
-  return fixed.map((entry) => ({
-    url: entry.url,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: entry.priority,
-  }));
+  // First occurrence wins, so a page listed twice keeps its higher priority.
+  const seen = new Set<string>();
+  return entries
+    .filter(({ path }) => !seen.has(path) && !!seen.add(path))
+    .map(({ path, priority }) => ({
+      url: absoluteUrl(path),
+      changeFrequency: "monthly" as const,
+      priority,
+    }));
 }

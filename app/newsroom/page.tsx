@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { SourceLine } from "@/components/Source";
@@ -11,11 +12,12 @@ import {
 } from "@content/newsroom";
 import { INSTITUTION_EMAILS } from "@content/contacts";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Newsroom",
   description:
     "Announcements, research notes and institutional appearances from African Hidden Voices.",
-};
+  path: "/newsroom",
+});
 
 export default function NewsroomPage() {
   return (

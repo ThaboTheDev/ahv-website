@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { RecordCard } from "@/components/Cards";
 import { DATABASE_RECORDS, databaseCountries } from "@content/database";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "The Iimboni Database",
   description:
     "A research record of Africa's spiritual authorities: Iimboni, spiritual kings, healers, guiders and founders of institutions.",
-};
+  path: "/database",
+});
 
 export default function DatabasePage() {
   const countries = databaseCountries();

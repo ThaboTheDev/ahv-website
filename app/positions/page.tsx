@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { PositionBlock } from "@/components/Cards";
 import { POSITIONS } from "@content/positions";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Standing Positions",
   description:
     "Ten positions African Hidden Voices holds, each with the objection against it stated at full strength.",
-};
+  path: "/positions",
+});
 
 export default function PositionsPage() {
   return (

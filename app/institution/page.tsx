@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Prose, Section, Split } from "@/components/Section";
@@ -9,11 +10,12 @@ import {
 } from "@content/institution";
 import { DEPARTMENTS } from "@content/departments";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "The Institution",
   description:
     "What African Hidden Voices is, what it was established to do, and the authority under which it works.",
-};
+  path: "/institution",
+});
 
 export default function InstitutionPage() {
   const sections = [

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandMark } from "@/components/Logo";
 import { Quotation } from "@/components/Source";
@@ -7,6 +8,11 @@ import { DEPARTMENTS } from "@content/departments";
 import { POSITIONS } from "@content/positions";
 import { DIALOGUE_SERIES } from "@content/media";
 import { INSTITUTION } from "@content/global";
+import { SITE_URL } from "@/lib/site";
+
+export const metadata: Metadata = {
+  alternates: { canonical: SITE_URL },
+};
 
 export default function HomePage() {
   return (

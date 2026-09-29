@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
@@ -17,7 +18,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!channel) return { title: "Not found" };
 
-  return { title: channel.title, description: channel.summary };
+  return pageMetadata({
+    title: channel.title,
+    description: channel.summary,
+    path: `/engage/${channel.slug}`,
+  });
 }
 
 export default async function EngageChannelPage({ params }: Props) {

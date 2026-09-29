@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { SubmissionForm } from "@/components/SubmissionForm";
 import { RESEARCH_DIGEST } from "@content/media";
 import { INSTITUTION_EMAILS } from "@content/contacts";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "The Research Digest",
   description:
     "Monthly. New research, new database records, and institutional notes.",
-};
+  path: "/newsletter",
+});
 
 export default function NewsletterPage() {
   return (
