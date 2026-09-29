@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { DepartmentCard } from "@/components/Cards";
 import { DEPARTMENTS } from "@content/departments";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Departments",
   description:
     "Six departments, holding African Indigenous Spirituality across the disciplines that govern modern life.",
-};
+  path: "/departments",
+});
 
 export default function DepartmentsPage() {
   return (

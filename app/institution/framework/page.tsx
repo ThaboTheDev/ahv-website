@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Prose, Section } from "@/components/Section";
 import { FRAMEWORK } from "@content/institution";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "The Framework",
   description:
     "How African Hidden Voices knows what it knows, stated in full, so that it can be examined.",
-};
+  path: "/institution/framework",
+});
 
 export default function FrameworkPage() {
   return (

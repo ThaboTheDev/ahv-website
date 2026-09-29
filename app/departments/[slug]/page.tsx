@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/PageHero";
@@ -23,10 +24,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!department) return { title: "Department not found" };
 
-  return {
+  return pageMetadata({
     title: department.title,
     description: department.mandate,
-  };
+    path: `/departments/${department.slug}`,
+  });
 }
 
 export default async function DepartmentPage({ params }: Props) {

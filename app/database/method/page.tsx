@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { DATABASE_LIMITS, DOCUMENTARY_METHOD } from "@content/database";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Documentary Method",
-  description: "How each Iimboni Database record is made.",
-};
+  description:
+    "How each Iimboni Database record is made.",
+  path: "/database/method",
+});
 
 export default function DocumentaryMethodPage() {
   return (

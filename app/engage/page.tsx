@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { ENGAGE_CHANNELS, ENGAGE_INTRO, ENGAGE_LEDE } from "@content/engage";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Engage",
   description:
     "AHV works with universities, research councils, government bodies, spiritual institutions and interdisciplinary research sectors.",
-};
+  path: "/engage",
+});
 
 export default function EngagePage() {
   return (

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Prose, Section, Split } from "@/components/Section";
@@ -9,11 +10,12 @@ import {
   PUBLIC_RECORD,
 } from "@content/institution";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "The Founding Scholar",
   description:
     "HSRM Imboni Dr uZwi-Lezwe Radebe, iNkosi yamaKhosi oMoya, Founding Scholar of African Hidden Voices.",
-};
+  path: "/institution/imboni",
+});
 
 export default function FoundingScholarPage() {
   return (

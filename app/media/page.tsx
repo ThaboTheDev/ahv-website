@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { DIALOGUE_SERIES } from "@content/media";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "The Dialogue Series",
   description:
     "#UnmaskingAfricanTruths. Long-form recorded dialogue on African Indigenous Spirituality.",
-};
+  path: "/media",
+});
 
 export default function MediaPage() {
   return (

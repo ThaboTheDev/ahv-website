@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Section, Split } from "@/components/Section";
@@ -8,11 +9,12 @@ import {
 } from "@content/research";
 import { DEPARTMENTS } from "@content/departments";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Research",
   description:
     "Working papers, conference papers and research method from the six departments.",
-};
+  path: "/research",
+});
 
 export default function ResearchPage() {
   return (

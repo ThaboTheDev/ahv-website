@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { Quotation, SourceLine } from "@/components/Source";
@@ -9,11 +10,12 @@ import {
 } from "@content/institution";
 import { CONFERENCES } from "@content/research";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "The Institutional Record",
   description:
     "Recognition, partnerships and appearances, with sources. Every item can be checked.",
-};
+  path: "/institution/record",
+});
 
 export default function RecordPage() {
   return (

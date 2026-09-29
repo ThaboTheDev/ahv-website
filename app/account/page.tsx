@@ -1,16 +1,18 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { RESEARCHER_ACCESS as RA } from "@content/support";
 import { INSTITUTION_EMAILS } from "@content/contacts";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Researcher Access",
   description:
     "Access to the parts of the archive held under conditions, and to records under verification.",
+  path: "/account",
   // Not a public entry point: see the note on the page.
-  robots: { index: false, follow: true },
-};
+  noindex: true,
+});
 
 export default function ResearcherAccessPage() {
   return (

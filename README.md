@@ -135,6 +135,7 @@ app/                     Routes, all pre-rendered
   account/               Researcher access (deliberately unlinked, see below)
   icon.svg               Favicon, generated from the mark
   robots.ts, sitemap.ts  Generated from the content package
+  opengraph-image.tsx    Default share image (also twitter-image.tsx)
 
 components/
   Logo.tsx               BrandMark, Wordmark and the lockup
@@ -154,6 +155,8 @@ lib/
   brand.ts               Bird silhouette and flock layout for the mark
   africa-path.ts         AUTO-GENERATED continent outline. Do not edit
   format.ts              House-style formatting helpers
+  site.ts                Canonical site URL and pageMetadata() helper for SEO
+  structured-data.ts     schema.org JSON-LD builders (organisation, website, breadcrumbs)
 
 scripts/
   check-house-style.mjs  Fails on em dashes, reports forbidden terms
@@ -453,9 +456,10 @@ that needs an answer from the institution, not a code change.
 - Research ethics policy, and the working papers in preparation.
 - Media kit assets.
 - One institutional domain. Every contact and form route now uses
-  `africanhiddenvoices.co.za`; the canonical site URL in metadata, `robots.ts`
-  and `sitemap.ts` still reads `africanhiddenvoices.org`. Settle the domain and
-  align the three.
+  `africanhiddenvoices.co.za`; the canonical site URL (`lib/site.ts`, used by
+  metadata, `robots.ts`, `sitemap.ts` and structured data) defaults to
+  `africanhiddenvoices.org`. Settle the domain, then set
+  `NEXT_PUBLIC_SITE_URL` at build time or change the default in `lib/site.ts`.
 
 **Not yet built:**
 

@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { Quotation } from "@/components/Source";
 import { SUPPORT } from "@content/support";
 import { INSTITUTION_EMAILS } from "@content/contacts";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Support the Research",
   description:
     "Field documentation, archival research and publication are the cost of restoring a record that was deliberately closed.",
-};
+  path: "/support",
+});
 
 export default function SupportPage() {
   return (

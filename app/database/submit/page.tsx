@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { SubmissionForm } from "@/components/SubmissionForm";
 import { SUBMIT_A_VOICE } from "@content/support";
 import { INSTITUTION_EMAILS } from "@content/contacts";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Submit a Voice",
   description:
     "If your family or community holds the memory of an Imboni whose work is not in the record, AHV would like to document it.",
-};
+  path: "/database/submit",
+});
 
 export default function SubmitVoicePage() {
   return (

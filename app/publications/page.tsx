@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section, Split } from "@/components/Section";
 import { Quotation } from "@/components/Source";
@@ -10,11 +11,12 @@ import {
   RECORD_NOTE,
 } from "@content/publications";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Publications",
   description:
     "AHV's books, and the independent scholarship that cites them.",
-};
+  path: "/publications",
+});
 
 export default function PublicationsPage() {
   return (
