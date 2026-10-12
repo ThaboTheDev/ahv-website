@@ -7,6 +7,8 @@
  * compulsory.
  */
 
+import type { ContentImage } from "./blog";
+
 export type RecordStatus = "Verified" | "Single source" | "Under verification";
 
 export interface DatabaseRecord {
@@ -20,13 +22,20 @@ export interface DatabaseRecord {
   place: string;
   /** Country, used for the database's country count. */
   country: string;
-  region: "Southern Africa" | "Central Africa";
+  region:
+    | "Southern Africa"
+    | "Central Africa"
+    | "East Africa"
+    | "West Africa"
+    | "North Africa";
   status: RecordStatus;
   /** How the colonial and mission record named the person. */
   colonialLabel: string;
   summary: string;
   /** Compulsory. What the evidence does not establish. */
   notEstablished: string;
+  /** Optional archival plate or portrait. */
+  image?: ContentImage;
 }
 
 export const DATABASE_RECORDS: DatabaseRecord[] = [

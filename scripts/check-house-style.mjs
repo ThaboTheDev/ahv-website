@@ -73,7 +73,7 @@ const ALLOWLIST = [
  * Files exempt from the forbidden-term check, because they exist to name the
  * terms. The em-dash check still applies to them.
  */
-const TERM_EXEMPT = [/HOUSE-STYLE\.md$/];
+const TERM_EXEMPT = [/HOUSE-STYLE\.md$/, /house-style\.ts$/];
 
 function walk(dir, files = []) {
   for (const entry of readdirSync(dir)) {

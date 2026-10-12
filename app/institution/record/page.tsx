@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
-import { Quotation, SourceLine } from "@/components/Source";
+import { MediaFigure, Quotation, SourceLine } from "@/components/Source";
+import { getCmsStore } from "@/lib/cms";
 import {
   INSTITUTIONAL_RECORD,
   RECORD_INTRO,
   RECORD_LEDE,
 } from "@content/institution";
-import { CONFERENCES } from "@content/research";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = pageMetadata({
   title: "The Institutional Record",
@@ -18,6 +20,8 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function RecordPage() {
+  const { conferences } = getCmsStore();
+
   return (
     <>
       <PageHero
@@ -79,7 +83,7 @@ export default function RecordPage() {
           Conference record
         </h2>
         <div className="mt-10 space-y-10">
-          {CONFERENCES.map((conference) => (
+          {conferences.map((conference) => (
             <article
               key={conference.title}
               className="border-t border-rule pt-6"
@@ -90,6 +94,12 @@ export default function RecordPage() {
               <h3 className="mt-2 font-serif text-xl leading-snug text-ink">
                 {conference.title}
               </h3>
+              {conference.image && (
+                <MediaFigure
+                  image={conference.image}
+                  className="mt-4 max-w-2xl"
+                />
+              )}
               <p className="mt-3 max-w-3xl font-serif text-[1.0625rem] leading-relaxed text-ink-soft">
                 {conference.body}
               </p>

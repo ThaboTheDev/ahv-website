@@ -1,11 +1,14 @@
 /** Newsroom: institutional announcements and research notes. */
 
+import type { ContentImage } from "./blog";
+
 export interface Announcement {
   date: string;
   category: string;
   title: string;
   body: string;
   source?: { label: string; href: string };
+  image?: ContentImage;
 }
 
 export const ANNOUNCEMENTS: Announcement[] = [
@@ -59,7 +62,7 @@ export const NEWSROOM_INTRO =
   "Two streams on one page, clearly distinguished: institutional announcements, and research notes from the departments.";
 
 export const RESEARCH_NOTES_NOTE =
-  "The first research notes are in preparation. This replaces the blog, which was published empty.";
+  "Short-form essays and research notes from the six departments are published on the AHV Blog, with their sources, standing positions and restored terms linked in full.";
 
 export const MEDIA_KIT = {
   title: "Media kit",

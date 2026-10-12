@@ -1,5 +1,7 @@
 /** Research output: conference papers, appearances and method. */
 
+import type { ContentImage } from "./blog";
+
 export interface ConferencePaper {
   title: string;
   author: string;
@@ -7,6 +9,7 @@ export interface ConferencePaper {
   date: string;
   /** Optional external link to the programme. */
   source?: { label: string; href: string };
+  image?: ContentImage;
 }
 
 export const CONFERENCE_PAPERS: ConferencePaper[] = [
@@ -39,6 +42,7 @@ export interface Conference {
   title: string;
   body: string;
   source?: { label: string; href: string };
+  image?: ContentImage;
 }
 
 /** Institutional conference appearances, in reverse chronological order. */
@@ -69,7 +73,21 @@ export const CONFERENCES: Conference[] = [
 ];
 
 /** The numbering convention for working papers. */
+export interface WorkingPaper {
+  id: string;
+  title: string;
+  author: string;
+  department: string;
+  date: string;
+  status: "Published" | "In preparation";
+  abstract: string;
+  pdfUrl?: string;
+  image?: ContentImage;
+}
+
+export const WORKING_PAPERS: WorkingPaper[] = [];
+
 export const WORKING_PAPER_SERIES = {
   prefix: "AHV-WP",
-  note: "The first working papers are in preparation. This section will list them with author, department, date, abstract and a downloadable PDF.",
+  note: "The first working papers are in preparation. This section lists them with author, department, date, abstract and a downloadable PDF as each paper is released.",
 };

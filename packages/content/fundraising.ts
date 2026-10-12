@@ -74,7 +74,7 @@ export const FUNDRAISING = {
     defaultTab: "subscribe" as const,
     suppressAfterDismissDays: 14,
     suppressAfterSubscribeDays: 365,
-    excludePaths: ["/support", "/account", "/engage", "/database/submit"],
+    excludePaths: ["/support", "/account", "/engage", "/database/submit", "/admin"],
   },
 
   /**

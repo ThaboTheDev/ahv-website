@@ -77,6 +77,11 @@ export const HOME = {
     ],
     link: { label: "The institutional record", href: "/institution/record" },
   },
+  blogSection: {
+    title: "Essays and research notes",
+    lead: "Short-form scholarship from the six departments: each piece states its central claim, names the restored terms it uses, and carries its sources.",
+    link: { label: "All essays on the AHV Blog", href: "/blog" },
+  },
   dialogue: {
     title: "#UnmaskingAfricanTruths",
     body: "Long-form recorded dialogue on African Indigenous Spirituality, published on AHV's channel.",

@@ -2,14 +2,15 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section, Split } from "@/components/Section";
-import { Quotation } from "@/components/Source";
+import { MediaFigure, Quotation } from "@/components/Source";
+import { getCmsStore } from "@/lib/cms";
 import {
   CITATIONS,
   INDEPENDENT_STUDY,
-  IN_PREPARATION,
-  PUBLICATIONS,
   RECORD_NOTE,
 } from "@content/publications";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = pageMetadata({
   title: "Publications",
@@ -19,6 +20,8 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function PublicationsPage() {
+  const { publications, forthcomingPublications } = getCmsStore();
+
   return (
     <>
       <PageHero
@@ -32,22 +35,33 @@ export default function PublicationsPage() {
       <Section tone="paper">
         <Split eyebrow="AHV publications" title="AHV publications">
           <div className="space-y-10">
-            {PUBLICATIONS.map((book) => (
+            {publications.map((book) => (
               <article key={book.isbn} className="border-t-2 border-ink/85 pt-6">
-                <h3 className="font-serif text-xl leading-snug text-ink">
-                  {book.title}
-                </h3>
-                <p className="mt-2 font-mono text-xs leading-relaxed text-ash">
-                  {book.publisher}, {book.place}, {book.year} · ISBN {book.isbn}
-                </p>
-                {book.byline && (
-                  <p className="mt-3 font-serif text-sm italic text-ink-soft">
-                    {book.byline}
-                  </p>
-                )}
-                <p className="mt-4 font-serif text-[1.0625rem] leading-relaxed text-ink-soft">
-                  {book.body}
-                </p>
+                <div className="grid gap-6 sm:grid-cols-[140px_1fr]">
+                  {book.image?.src ? (
+                    <MediaFigure
+                      image={book.image}
+                      imgClassName="w-full object-cover"
+                    />
+                  ) : null}
+                  <div className={book.image?.src ? "" : "sm:col-span-2"}>
+                    <h3 className="font-serif text-xl leading-snug text-ink">
+                      {book.title}
+                    </h3>
+                    <p className="mt-2 font-mono text-xs leading-relaxed text-ash">
+                      {book.publisher}, {book.place}, {book.year} · ISBN{" "}
+                      {book.isbn}
+                    </p>
+                    {book.byline && (
+                      <p className="mt-3 font-serif text-sm italic text-ink-soft">
+                        {book.byline}
+                      </p>
+                    )}
+                    <p className="mt-4 font-serif text-[1.0625rem] leading-relaxed text-ink-soft">
+                      {book.body}
+                    </p>
+                  </div>
+                </div>
               </article>
             ))}
           </div>
@@ -109,12 +123,15 @@ export default function PublicationsPage() {
       {/* In preparation */}
       <Section tone="paper">
         <Split eyebrow="In preparation" title="In preparation">
-          {IN_PREPARATION.map((item) => (
+          {forthcomingPublications.map((item) => (
             <article key={item.title} className="border-t border-rule pt-6">
               <h3 className="font-serif text-xl leading-snug text-ink">
                 {item.title}
               </h3>
               <p className="mt-2 font-mono text-xs text-ash">{item.author}</p>
+              {item.image && (
+                <MediaFigure image={item.image} className="mt-4 max-w-sm" />
+              )}
               <p className="mt-4 font-serif text-[1.0625rem] leading-relaxed text-ink-soft">
                 {item.body}
               </p>

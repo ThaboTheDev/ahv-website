@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" fill="#17151A"/>
+  <rect x="24" y="24" width="752" height="402" stroke="#A67C2E" stroke-opacity="0.45" stroke-width="1"/>
+  <line x1="24" y1="84" x2="776" y2="84" stroke="#EBE7E0" stroke-opacity="0.15"/>
+  <text x="48" y="60" fill="#E6D9B8" font-family="monospace" font-size="13" letter-spacing="2">DEPARTMENT 01 · AIS AND ECONOMICS · PLATE V</text>
+  <rect x="230" y="115" width="340" height="80" fill="#45060F" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="258" y="148" fill="#E6D9B8" font-family="monospace" font-size="11" letter-spacing="1.5">THE PARENT INSTITUTION</text>
+  <text x="258" y="176" fill="#FBFAF7" font-family="Georgia, serif" font-size="20">Provision Precedes Production</text>
+  <rect x="70" y="240" width="200" height="95" fill="#232027" stroke="#EBE7E0" stroke-opacity="0.3"/>
+  <text x="90" y="275" fill="#E6D9B8" font-family="monospace" font-size="11">FIRST FRUITS</text>
+  <text x="90" y="302" fill="#FBFAF7" font-family="Georgia, serif" font-size="15">Economy of Return</text>
+  <rect x="300" y="240" width="200" height="95" fill="#232027" stroke="#EBE7E0" stroke-opacity="0.3"/>
+  <text x="320" y="275" fill="#E6D9B8" font-family="monospace" font-size="11">SACRED RELEASE</text>
+  <text x="320" y="302" fill="#FBFAF7" font-family="Georgia, serif" font-size="15">Cancellation &amp; Order</text>
+  <rect x="530" y="240" width="200" height="95" fill="#232027" stroke="#EBE7E0" stroke-opacity="0.3"/>
+  <text x="550" y="275" fill="#E6D9B8" font-family="monospace" font-size="11">ENTERPRISE</text>
+  <text x="550" y="302" fill="#FBFAF7" font-family="Georgia, serif" font-size="15">Spiritual Activation</text>
+  <text x="48" y="395" fill="#EBE7E0" fill-opacity="0.6" font-family="monospace" font-size="11">AFRICAN HIDDEN VOICES · SPIRITUAL ARCHITECTURE OF VALUE</text>
+</svg>

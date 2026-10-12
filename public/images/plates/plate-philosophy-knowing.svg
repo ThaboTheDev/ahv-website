@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" fill="#17151A"/>
+  <rect x="24" y="24" width="752" height="402" stroke="#A67C2E" stroke-opacity="0.45" stroke-width="1"/>
+  <line x1="24" y1="84" x2="776" y2="84" stroke="#EBE7E0" stroke-opacity="0.15"/>
+  <text x="48" y="60" fill="#E6D9B8" font-family="monospace" font-size="13" letter-spacing="2">DEPARTMENT 03 · AIS AND PHILOSOPHY · PLATE II</text>
+  <rect x="80" y="135" width="290" height="190" fill="#232027" stroke="#EBE7E0" stroke-opacity="0.3" stroke-width="1.5"/>
+  <text x="104" y="172" fill="#EBE7E0" fill-opacity="0.65" font-family="monospace" font-size="11" letter-spacing="1.5">RELIGIOUS ORDER</text>
+  <text x="104" y="206" fill="#FBFAF7" font-family="Georgia, serif" font-size="22">Taught Experience</text>
+  <text x="104" y="240" fill="#EBE7E0" fill-opacity="0.78" font-family="monospace" font-size="12">· Founder &amp; datable origin</text>
+  <text x="104" y="264" fill="#EBE7E0" fill-opacity="0.78" font-family="monospace" font-size="12">· Codified text &amp; doctrine</text>
+  <text x="104" y="288" fill="#EBE7E0" fill-opacity="0.78" font-family="monospace" font-size="12">· Secured by belief</text>
+  <rect x="430" y="135" width="290" height="190" fill="#45060F" stroke="#C8102E" stroke-width="1.5"/>
+  <text x="454" y="172" fill="#E6D9B8" font-family="monospace" font-size="11" letter-spacing="1.5">SPIRITUAL ORDER (AIS)</text>
+  <text x="454" y="206" fill="#FBFAF7" font-family="Georgia, serif" font-size="22">Revealed Experience</text>
+  <text x="454" y="240" fill="#EBE7E0" fill-opacity="0.9" font-family="monospace" font-size="12">· Transmitted by Isambulo</text>
+  <text x="454" y="264" fill="#EBE7E0" fill-opacity="0.9" font-family="monospace" font-size="12">· Mediated through PSCB</text>
+  <text x="454" y="288" fill="#EBE7E0" fill-opacity="0.9" font-family="monospace" font-size="12">· Secured by knowing</text>
+  <text x="48" y="395" fill="#EBE7E0" fill-opacity="0.6" font-family="monospace" font-size="11">AFRICAN HIDDEN VOICES RESEARCH INSTITUTION · EPISTEMOLOGY OF REVELATION</text>
+</svg>

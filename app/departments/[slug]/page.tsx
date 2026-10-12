@@ -5,12 +5,14 @@ import { notFound } from "next/navigation";
 import { PageHero } from "@/components/PageHero";
 import { Prose, Section, Split } from "@/components/Section";
 import { ProgrammeList } from "@/components/Cards";
+import { getCmsStore } from "@/lib/cms";
 import {
   COMPARATIVE_PROGRAMME,
   DEPARTMENTS,
   getDepartment,
 } from "@content/departments";
-import { POSITIONS } from "@content/positions";
+
+export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -37,9 +39,14 @@ export default async function DepartmentPage({ params }: Props) {
 
   if (!department) notFound();
 
+  const { positions, blogPosts } = getCmsStore();
+
   // Positions that name this department as their home.
-  const relatedPositions = POSITIONS.filter(
+  const relatedPositions = positions.filter(
     (position) => position.department === department.slug,
+  );
+  const departmentPosts = blogPosts.filter(
+    (post) => post.department === department.slug,
   );
 
   return (
@@ -214,6 +221,31 @@ export default async function DepartmentPage({ params }: Props) {
                     </span>
                     <span className="font-serif text-[0.9375rem] text-ink-soft transition-colors group-hover:text-brand-800">
                       {position.title}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {departmentPosts.length > 0 && (
+          <div className="mt-12 border-t border-rule pt-8">
+            <h2 className="eyebrow">
+              Essays and research notes from this department
+            </h2>
+            <ul className="mt-4 space-y-4">
+              {departmentPosts.map((post) => (
+                <li key={post.slug}>
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="group block py-1"
+                  >
+                    <span className="font-mono text-xs text-brand-700">
+                      {post.date} · {post.category}
+                    </span>
+                    <span className="mt-1 block font-serif text-lg text-ink transition-colors group-hover:text-brand-800">
+                      {post.title}
                     </span>
                   </Link>
                 </li>

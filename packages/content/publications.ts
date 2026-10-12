@@ -1,5 +1,7 @@
 /** AHV's books, and the independent scholarship that cites them. */
 
+import type { ContentImage } from "./blog";
+
 export interface Publication {
   title: string;
   publisher: string;
@@ -9,6 +11,8 @@ export interface Publication {
   body: string;
   /** Prepended to the citation line where a preface author is recorded. */
   byline?: string;
+  /** Optional book cover or plate. */
+  image?: ContentImage;
 }
 
 export const PUBLICATIONS: Publication[] = [
@@ -19,6 +23,11 @@ export const PUBLICATIONS: Publication[] = [
     year: "2023",
     isbn: "9780796132277",
     body: "The founding statement of AHV's research position, including the account of the transmission of spiritual consciousness out of Africa. Cited in Introvigne and Šorytė, Cambridge University Press, 2025.",
+    image: {
+      src: "/images/plates/book-introduction-2023.svg",
+      alt: "Cover plate for An Introduction into Afrikan Indigenous Spirituality, Isambulo Publications, 2023",
+      caption: "Isambulo Publications · Johannesburg, 2023 · ISBN 9780796132277",
+    },
   },
   {
     title: "Restoring Africa's Spiritual Identity",
@@ -28,6 +37,11 @@ export const PUBLICATIONS: Publication[] = [
     isbn: "9781037019647",
     byline: "Preface by Inkosi Yomoya Imboni Dr uZwi-Lezwe Radebe.",
     body: "The extended statement of the AIS position, including the correction of the inherited scholarly categories and the account of the relationship between spirituality and tradition. Cited throughout Introvigne and Šorytė, Cambridge University Press, 2025.",
+    image: {
+      src: "/images/plates/book-restoring-2024.svg",
+      alt: "Cover plate for Restoring Africa's Spiritual Identity, Isambulo Publications, 2024",
+      caption: "Isambulo Publications · Johannesburg, 2024 · ISBN 9781037019647",
+    },
   },
 ];
 
@@ -81,6 +95,7 @@ export interface ForthcomingPublication {
   title: string;
   author: string;
   body: string;
+  image?: ContentImage;
 }
 
 export const IN_PREPARATION: ForthcomingPublication[] = [

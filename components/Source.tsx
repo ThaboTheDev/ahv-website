@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { ContentImage } from "@content/blog";
 
 /**
  * A source line.
@@ -83,5 +84,41 @@ export function RecordField({
         {children}
       </dd>
     </div>
+  );
+}
+
+/**
+ * An archival plate, diagram, book cover or photograph with optional caption.
+ */
+export function MediaFigure({
+  image,
+  className,
+  imgClassName,
+}: {
+  image?: ContentImage;
+  className?: string;
+  imgClassName?: string;
+}) {
+  if (!image?.src) return null;
+
+  return (
+    <figure className={className}>
+      <div className="overflow-hidden border border-rule bg-wash">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={image.src}
+          alt={image.alt || "African Hidden Voices visual plate"}
+          loading="lazy"
+          className={
+            imgClassName ?? "block max-h-[26rem] w-full object-cover"
+          }
+        />
+      </div>
+      {image.caption && (
+        <figcaption className="mt-2 font-mono text-xs leading-relaxed text-ash">
+          {image.caption}
+        </figcaption>
+      )}
+    </figure>
   );
 }

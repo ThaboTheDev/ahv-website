@@ -3,11 +3,12 @@ import { pageMetadata } from "@/lib/site";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Section, Split } from "@/components/Section";
-import {
-  CONFERENCE_PAPERS,
-  WORKING_PAPER_SERIES,
-} from "@content/research";
-import { DEPARTMENTS } from "@content/departments";
+import { MediaFigure, SourceLine } from "@/components/Source";
+import { getCmsStore } from "@/lib/cms";
+import { WORKING_PAPER_SERIES } from "@content/research";
+import { DEPARTMENTS, getDepartment } from "@content/departments";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = pageMetadata({
   title: "Research",
@@ -17,6 +18,8 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function ResearchPage() {
+  const { workingPapers, conferencePapers } = getCmsStore();
+
   return (
     <>
       <PageHero
@@ -27,12 +30,20 @@ export default function ResearchPage() {
       />
 
       <Section tone="paper">
-        <p className="max-w-2xl font-serif text-[1.0625rem] leading-relaxed text-ink-soft">
-          Every item carries its department, its status, its date and its
-          author. Work in preparation is listed as in preparation and is not
-          linked as though it were published. AHV would rather show a short list
-          of real papers than a long one that cannot be opened.
-        </p>
+        <div className="flex flex-wrap items-baseline justify-between gap-4">
+          <p className="max-w-2xl font-serif text-[1.0625rem] leading-relaxed text-ink-soft">
+            Every item carries its department, its status, its date and its
+            author. Work in preparation is listed as in preparation and is not
+            linked as though it were published. AHV would rather show a short list
+            of real papers than a long one that cannot be opened.
+          </p>
+          <Link
+            href="/admin"
+            className="border border-rule bg-wash px-3.5 py-2 font-mono text-xs uppercase tracking-[0.12em] text-brand-700 transition-colors hover:border-brand-700"
+          >
+            + Manage research in Admin →
+          </Link>
+        </div>
       </Section>
 
       {/* Working papers */}
@@ -44,6 +55,63 @@ export default function ResearchPage() {
           <p className="mt-4 font-serif text-[1.0625rem] leading-relaxed text-ink-soft">
             {WORKING_PAPER_SERIES.note}
           </p>
+
+          {workingPapers.length > 0 && (
+            <ol className="mt-8 space-y-8">
+              {workingPapers.map((paper) => {
+                const department = getDepartment(paper.department);
+                return (
+                  <li key={paper.id} className="border-t border-rule pt-5">
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <span className="font-mono text-xs font-semibold text-brand-700">
+                        {paper.id}
+                      </span>
+                      <span
+                        className={`border px-2 py-0.5 font-mono text-[0.625rem] uppercase tracking-[0.12em] ${
+                          paper.status === "Published"
+                            ? "border-verdigris text-verdigris"
+                            : "border-ochre text-ochre"
+                        }`}
+                      >
+                        {paper.status}
+                      </span>
+                    </div>
+                    <h3 className="mt-2 font-serif text-lg leading-snug text-ink">
+                      {paper.title}
+                    </h3>
+                    <p className="mt-2 font-mono text-xs leading-relaxed text-ash">
+                      {paper.author}
+                      {department ? (
+                        <>
+                          {" · "}
+                          <Link
+                            href={`/departments/${department.slug}`}
+                            className="underline decoration-rule decoration-1 underline-offset-2 hover:text-brand-700"
+                          >
+                            {department.title}
+                          </Link>
+                        </>
+                      ) : null}
+                      {" · "}
+                      {paper.date}
+                    </p>
+                    <p className="mt-3 font-serif text-[1.0625rem] leading-relaxed text-ink-soft">
+                      {paper.abstract}
+                    </p>
+                    {paper.image && (
+                      <MediaFigure
+                        image={paper.image}
+                        className="mt-4 max-w-xl"
+                      />
+                    )}
+                    {paper.pdfUrl && paper.status === "Published" && (
+                      <SourceLine label="Download working paper (PDF)" href={paper.pdfUrl} />
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          )}
         </Split>
       </Section>
 
@@ -58,7 +126,7 @@ export default function ResearchPage() {
           </p>
 
           <ol className="mt-8 space-y-8">
-            {CONFERENCE_PAPERS.map((paper) => (
+            {conferencePapers.map((paper) => (
               <li key={paper.title} className="border-t border-rule pt-5">
                 <h3 className="font-serif text-lg leading-snug text-ink">
                   {paper.title}
@@ -67,6 +135,15 @@ export default function ResearchPage() {
                   {paper.author} · African Hidden Voices · {paper.venue} ·{" "}
                   {paper.date}
                 </p>
+                {paper.image && (
+                  <MediaFigure image={paper.image} className="mt-4 max-w-xl" />
+                )}
+                {paper.source && (
+                  <SourceLine
+                    label={paper.source.label}
+                    href={paper.source.href}
+                  />
+                )}
               </li>
             ))}
           </ol>
