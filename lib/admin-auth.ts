@@ -1,12 +1,30 @@
 /**
  * Authentication and session management for the AHV Editorial & Research
  * Administration Desk (/admin).
+ *
+ * Two modes:
+ *
+ * 1. Supabase mode (when NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
+ *    and SUPABASE_SERVICE_ROLE_KEY are set): the password is verified against
+ *    Supabase Auth, access is gated by the admin_users table, and the signed
+ *    session cookie carries the row's session_version so a password change or
+ *    a revocation invalidates every existing session immediately.
+ *
+ * 2. Local development fallback (no Supabase envs): credentials live in
+ *    data/admin-auth.json and sessions are signed the same way. This exists so
+ *    the desk keeps working before the Supabase project is wired; it is not a
+ *    production configuration.
  */
 
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { cookies } from "next/headers";
+import {
+  getAdminRow,
+  isSupabaseConfigured,
+  verifySupabaseCredentials,
+} from "@/lib/supabase";
 
 export const ADMIN_COOKIE_NAME = "ahv_admin_session";
 
@@ -20,13 +38,33 @@ const SESSION_SECRET =
   process.env.AHV_SESSION_SECRET ??
   "ahv-research-institution-editorial-desk-secret-2026";
 
+export type AuthMode = "supabase" | "local";
+
+export interface AdminSession {
+  authenticated: boolean;
+  email: string;
+  mode: AuthMode;
+  /** Supabase Auth user id when in supabase mode. */
+  userId?: string;
+}
+
+interface SessionClaims {
+  uid: string;
+  email: string;
+  version: number;
+}
+
 interface StoredCredentials {
   email: string;
   password: string;
   updatedAt: string;
 }
 
-export function getAdminCredentials(): { email: string; password: string } {
+/* ------------------------------------------------------------------ */
+/* Local fallback credentials                                         */
+/* ------------------------------------------------------------------ */
+
+function getLocalCredentials(): { email: string; password: string } {
   if (existsSync(AUTH_FILE_PATH)) {
     try {
       const parsed = JSON.parse(
@@ -45,7 +83,7 @@ export function getAdminCredentials(): { email: string; password: string } {
   };
 }
 
-export function saveAdminCredentials(email: string, password: string): void {
+function saveLocalCredentials(email: string, password: string): void {
   const payload: StoredCredentials = {
     email: email.trim().toLowerCase(),
     password,
@@ -55,60 +93,162 @@ export function saveAdminCredentials(email: string, password: string): void {
   writeFileSync(AUTH_FILE_PATH, JSON.stringify(payload, null, 2), "utf8");
 }
 
-function signToken(email: string, password: string): string {
-  const normalized = `${email.trim().toLowerCase()}:${password}`;
-  const mac = createHmac("sha256", SESSION_SECRET)
-    .update(normalized)
-    .digest("hex");
-  const encodedEmail = Buffer.from(email.trim().toLowerCase(), "utf8").toString(
+/* ------------------------------------------------------------------ */
+/* Signed session tokens                                              */
+/* ------------------------------------------------------------------ */
+
+function signClaims(claims: SessionClaims): string {
+  const payload = Buffer.from(JSON.stringify(claims), "utf8").toString(
     "base64url",
   );
-  return `${encodedEmail}.${mac}`;
+  const mac = createHmac("sha256", SESSION_SECRET).update(payload).digest("hex");
+  return `${payload}.${mac}`;
 }
 
-export function createSessionToken(email: string, password: string): string {
-  return signToken(email, password);
+function verifyClaims(token: string | undefined): SessionClaims | null {
+  if (!token || !token.includes(".")) return null;
+  const [payload, mac] = token.split(".");
+  const expected = createHmac("sha256", SESSION_SECRET)
+    .update(payload)
+    .digest("hex");
+
+  const a = Buffer.from(mac ?? "");
+  const b = Buffer.from(expected);
+  if (a.length !== b.length || !timingSafeEqual(a, b)) return null;
+
+  try {
+    const claims = JSON.parse(
+      Buffer.from(payload, "base64url").toString("utf8"),
+    ) as SessionClaims;
+    if (
+      typeof claims.uid !== "string" ||
+      typeof claims.email !== "string" ||
+      typeof claims.version !== "number"
+    ) {
+      return null;
+    }
+    return claims;
+  } catch {
+    return null;
+  }
+}
+
+/** Issue a session token. uid is the Supabase user id or "local". */
+export function issueSessionToken(
+  email: string,
+  userId: string,
+  version: number,
+): string {
+  return signClaims({
+    uid: userId,
+    email: email.trim().toLowerCase(),
+    version,
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* Credential verification                                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Verify an email/password pair against the active auth backend and return the
+ * claims a session cookie should carry. Returns null on failure.
+ */
+export async function authenticateAdministrator(
+  email: string,
+  password: string,
+): Promise<{ token: string; email: string; userId: string } | null> {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  if (isSupabaseConfigured()) {
+    const verified = await verifySupabaseCredentials(normalizedEmail, password);
+    if (!verified) return null;
+
+    const adminRow = await getAdminRow(verified.userId);
+    if (!adminRow) return null;
+
+    return {
+      token: issueSessionToken(
+        adminRow.email,
+        verified.userId,
+        adminRow.session_version,
+      ),
+      email: adminRow.email,
+      userId: verified.userId,
+    };
+  }
+
+  // Local fallback.
+  const current = getLocalCredentials();
+  const emailMatches = normalizedEmail === current.email.trim().toLowerCase();
+  const passwordMatches = password === current.password;
+  if (!emailMatches || !passwordMatches) return null;
+
+  return {
+    token: issueSessionToken(current.email, "local", 1),
+    email: current.email.trim().toLowerCase(),
+    userId: "local",
+  };
 }
 
 export function verifyCredentials(email: string, password: string): boolean {
-  const current = getAdminCredentials();
+  const current = getLocalCredentials();
   const emailMatches =
     email.trim().toLowerCase() === current.email.trim().toLowerCase();
-  const passwordMatches = password === current.password;
-  return emailMatches && passwordMatches;
+  return emailMatches && password === current.password;
 }
 
-export function verifySessionToken(token: string | undefined): {
-  authenticated: boolean;
-  email?: string;
-} {
-  if (!token || !token.includes(".")) {
-    return { authenticated: false };
-  }
-  const current = getAdminCredentials();
-  const expected = signToken(current.email, current.password);
-
-  const a = Buffer.from(token);
-  const b = Buffer.from(expected);
-  if (a.length !== b.length) {
-    return { authenticated: false };
-  }
-  if (!timingSafeEqual(a, b)) {
-    return { authenticated: false };
-  }
-  return { authenticated: true, email: current.email };
+export function saveLocalAdminCredentials(
+  email: string,
+  password: string,
+): void {
+  saveLocalCredentials(email, password);
 }
 
-export async function getAdminSession(): Promise<{
-  authenticated: boolean;
-  email: string;
-}> {
+/* ------------------------------------------------------------------ */
+/* Session resolution                                                 */
+/* ------------------------------------------------------------------ */
+
+export async function resolveSessionToken(
+  token: string | undefined,
+): Promise<AdminSession> {
+  const mode: AuthMode = isSupabaseConfigured() ? "supabase" : "local";
+  const claims = verifyClaims(token);
+
+  if (!claims) {
+    return { authenticated: false, email: "", mode };
+  }
+
+  if (mode === "supabase") {
+    if (claims.uid === "local") {
+      return { authenticated: false, email: "", mode };
+    }
+    const adminRow = await getAdminRow(claims.uid);
+    if (!adminRow || adminRow.session_version !== claims.version) {
+      // Row removed (revoked) or credentials rotated (version bumped).
+      return { authenticated: false, email: "", mode };
+    }
+    return {
+      authenticated: true,
+      email: adminRow.email,
+      mode,
+      userId: adminRow.id,
+    };
+  }
+
+  if (claims.uid !== "local") {
+    return { authenticated: false, email: "", mode };
+  }
+  return {
+    authenticated: true,
+    email: claims.email,
+    mode,
+    userId: "local",
+  };
+}
+
+export async function getAdminSession(): Promise<AdminSession> {
   const cookieStore = await cookies();
   const token = cookieStore.get(ADMIN_COOKIE_NAME)?.value;
-  const result = verifySessionToken(token);
-  const current = getAdminCredentials();
-  return {
-    authenticated: result.authenticated,
-    email: result.email ?? current.email,
-  };
+  return resolveSessionToken(token);
 }

@@ -413,11 +413,13 @@ export function AdminDashboard({
   departments,
   initialAuthenticated,
   initialEmail,
+  authMode,
 }: {
   initialStore: CmsStore;
   departments: Department[];
   initialAuthenticated: boolean;
   initialEmail: string;
+  authMode: "supabase" | "local";
 }) {
   const router = useRouter();
   const [store, setStore] = useState<CmsStore>(initialStore);
@@ -773,9 +775,9 @@ export function AdminDashboard({
           </button>
 
           <p className="border-t border-rule pt-4 font-mono text-xs leading-relaxed text-ash">
-            Default sign-in: admin@africanhiddenvoices.co.za · AHV-Admin-2026.
-            Sign in first, then use Administrator Settings to change the email
-            and password to your own private credentials.
+            {authMode === "supabase"
+              ? "Sign-in is verified against Supabase Auth and gated by the admin_users table. Use the administrator email and password created for this desk (see supabase/README.md), then open Administrator Settings to rotate them whenever you need."
+              : "Local development store (Supabase envs not set). Default sign-in: admin@africanhiddenvoices.co.za · AHV-Admin-2026. Sign in first, then use Administrator Settings to change the email and password to your own private credentials."}
           </p>
         </form>
       </div>
@@ -791,6 +793,10 @@ export function AdminDashboard({
           <span className="text-ink">{authEmail}</span>
           {" · "}authorised editor, AHV Editorial &amp; Research Administration
           Desk
+          {" · "}
+          {authMode === "supabase"
+            ? "verified by Supabase Auth"
+            : "local development store"}
         </p>
         <div className="flex flex-wrap items-center gap-2">
           <button

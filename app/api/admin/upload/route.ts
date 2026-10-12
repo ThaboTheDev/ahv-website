@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { extname, resolve } from "node:path";
 import { getAdminSession } from "@/lib/admin-auth";
+import {
+  isSupabaseConfigured,
+  uploadMediaToSupabase,
+} from "@/lib/supabase";
 
 const ALLOWED_EXTENSIONS = new Set([
   ".jpg",
@@ -13,6 +17,16 @@ const ALLOWED_EXTENSIONS = new Set([
   ".avif",
 ]);
 
+const ALLOWED_CONTENT_TYPES: Record<string, string> = {
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".png": "image/png",
+  ".webp": "image/webp",
+  ".gif": "image/gif",
+  ".svg": "image/svg+xml",
+  ".avif": "image/avif",
+};
+
 const MAX_BYTES = 10 * 1024 * 1024; // 10 MB
 
 export async function POST(request: Request) {
@@ -20,7 +34,10 @@ export async function POST(request: Request) {
     const session = await getAdminSession();
     if (!session.authenticated) {
       return NextResponse.json(
-        { ok: false, error: "Please sign in as an administrator to upload images." },
+        {
+          ok: false,
+          error: "Please sign in as an administrator to upload images.",
+        },
         { status: 401 },
       );
     }
@@ -44,6 +61,8 @@ export async function POST(request: Request) {
 
     const rawExt = extname(file.name).toLowerCase() || ".png";
     const ext = ALLOWED_EXTENSIONS.has(rawExt) ? rawExt : ".png";
+    const contentType =
+      ALLOWED_CONTENT_TYPES[ext] ?? file.type ?? "application/octet-stream";
     const safeStem =
       file.name
         .replace(/\.[^.]+$/, "")
@@ -53,16 +72,32 @@ export async function POST(request: Request) {
         .slice(0, 48) || "plate";
 
     const filename = `${Date.now()}-${safeStem}${ext}`;
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    // Supabase Storage (public "media" bucket) when configured.
+    if (isSupabaseConfigured()) {
+      const result = await uploadMediaToSupabase(filename, buffer, contentType);
+      if ("error" in result) {
+        return NextResponse.json({ ok: false, error: result.error }, { status: 500 });
+      }
+      return NextResponse.json({
+        ok: true,
+        url: result.url,
+        filename,
+        storage: "supabase",
+      });
+    }
+
+    // Local fallback: public/uploads.
     const uploadsDir = resolve(process.cwd(), "public/uploads");
     mkdirSync(uploadsDir, { recursive: true });
-
-    const buffer = Buffer.from(await file.arrayBuffer());
     writeFileSync(resolve(uploadsDir, filename), buffer);
 
     return NextResponse.json({
       ok: true,
       url: `/uploads/${filename}`,
       filename,
+      storage: "local",
     });
   } catch (error) {
     return NextResponse.json(

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/site";
 import { getCmsStore } from "@/lib/cms";
 import { getAdminSession } from "@/lib/admin-auth";
+import { isSupabaseConfigured } from "@/lib/supabase";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { AdminDashboard } from "@/components/AdminDashboard";
@@ -35,11 +36,15 @@ export default async function AdminPage() {
             label: "Access control",
             value: session.authenticated
               ? `Signed in as ${session.email}`
-              : "Administrator sign-in required",
+              : isSupabaseConfigured()
+                ? "Administrator sign-in required (Supabase Auth)"
+                : "Administrator sign-in required (local development store)",
           },
           {
             label: "Media & visual plates",
-            value: "Upload images or attach archival plates to every record",
+            value: isSupabaseConfigured()
+              ? "Upload images to the Supabase media bucket or attach archival plates"
+              : "Upload images or attach archival plates to every record",
           },
           {
             label: "Governing rule",
@@ -59,6 +64,7 @@ export default async function AdminPage() {
           departments={DEPARTMENTS}
           initialAuthenticated={session.authenticated}
           initialEmail={session.email}
+          authMode={session.mode}
         />
       </Section>
     </>

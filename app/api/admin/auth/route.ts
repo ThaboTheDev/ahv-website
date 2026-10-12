@@ -1,12 +1,25 @@
 import { NextResponse } from "next/server";
 import {
   ADMIN_COOKIE_NAME,
-  createSessionToken,
-  getAdminCredentials,
+  authenticateAdministrator,
   getAdminSession,
-  saveAdminCredentials,
+  issueSessionToken,
+  saveLocalAdminCredentials,
   verifyCredentials,
 } from "@/lib/admin-auth";
+import {
+  getAdminRow,
+  getServiceClient,
+  isSupabaseConfigured,
+  verifySupabaseCredentials,
+} from "@/lib/supabase";
+
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  sameSite: "lax" as const,
+  path: "/",
+  maxAge: 60 * 60 * 24 * 7,
+};
 
 export async function GET() {
   const session = await getAdminSession();
@@ -14,6 +27,7 @@ export async function GET() {
     ok: true,
     authenticated: session.authenticated,
     email: session.email,
+    mode: session.mode,
   });
 }
 
@@ -29,10 +43,12 @@ export async function POST(request: Request) {
     };
 
     if (body.action === "login") {
-      const email = String(body.email ?? "");
-      const password = String(body.password ?? "");
+      const result = await authenticateAdministrator(
+        String(body.email ?? ""),
+        String(body.password ?? ""),
+      );
 
-      if (!verifyCredentials(email, password)) {
+      if (!result) {
         return NextResponse.json(
           {
             ok: false,
@@ -42,30 +58,20 @@ export async function POST(request: Request) {
         );
       }
 
-      const current = getAdminCredentials();
-      const token = createSessionToken(current.email, current.password);
       const response = NextResponse.json({
         ok: true,
         authenticated: true,
-        email: current.email,
+        email: result.email,
+        mode: isSupabaseConfigured() ? "supabase" : "local",
       });
-
-      response.cookies.set(ADMIN_COOKIE_NAME, token, {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7,
-      });
-
+      response.cookies.set(ADMIN_COOKIE_NAME, result.token, COOKIE_OPTIONS);
       return response;
     }
 
     if (body.action === "logout") {
       const response = NextResponse.json({ ok: true, authenticated: false });
       response.cookies.set(ADMIN_COOKIE_NAME, "", {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
+        ...COOKIE_OPTIONS,
         maxAge: 0,
       });
       return response;
@@ -80,15 +86,7 @@ export async function POST(request: Request) {
         );
       }
 
-      const current = getAdminCredentials();
-      if (body.currentPassword !== current.password) {
-        return NextResponse.json(
-          { ok: false, error: "Current password does not match." },
-          { status: 400 },
-        );
-      }
-
-      const newEmail = String(body.newEmail ?? current.email).trim();
+      const newEmail = String(body.newEmail ?? session.email).trim();
       const newPassword = String(body.newPassword ?? "").trim();
 
       if (!newEmail || newPassword.length < 6) {
@@ -102,21 +100,83 @@ export async function POST(request: Request) {
         );
       }
 
-      saveAdminCredentials(newEmail, newPassword);
-      const token = createSessionToken(newEmail, newPassword);
+      if (isSupabaseConfigured() && session.userId) {
+        // Confirm the current password against Supabase Auth first.
+        const confirmed = await verifySupabaseCredentials(
+          session.email,
+          String(body.currentPassword ?? ""),
+        );
+        if (!confirmed || confirmed.userId !== session.userId) {
+          return NextResponse.json(
+            { ok: false, error: "Current password does not match." },
+            { status: 400 },
+          );
+        }
+
+        // Rotate credentials in Supabase Auth and bump session_version so
+        // every previously issued cookie stops working immediately.
+        const { error: updateError } = await getServiceClient()
+          .auth.admin.updateUserById(session.userId, {
+            email: newEmail.toLowerCase(),
+            password: newPassword,
+            email_confirm: true,
+          });
+        if (updateError) {
+          return NextResponse.json(
+            { ok: false, error: updateError.message },
+            { status: 400 },
+          );
+        }
+
+        const adminRow = await getAdminRow(session.userId);
+        const nextVersion = (adminRow?.session_version ?? 1) + 1;
+        const { error: rowError } = await getServiceClient()
+          .from("admin_users")
+          .update({ email: newEmail.toLowerCase(), session_version: nextVersion })
+          .eq("id", session.userId);
+        if (rowError) {
+          return NextResponse.json(
+            { ok: false, error: rowError.message },
+            { status: 400 },
+          );
+        }
+
+        const response = NextResponse.json({
+          ok: true,
+          authenticated: true,
+          email: newEmail.toLowerCase(),
+          mode: "supabase",
+        });
+        response.cookies.set(
+          ADMIN_COOKIE_NAME,
+          issueSessionToken(newEmail, session.userId, nextVersion),
+          COOKIE_OPTIONS,
+        );
+        return response;
+      }
+
+      // Local fallback.
+      if (
+        !verifyCredentials(session.email, String(body.currentPassword ?? ""))
+      ) {
+        return NextResponse.json(
+          { ok: false, error: "Current password does not match." },
+          { status: 400 },
+        );
+      }
+      saveLocalAdminCredentials(newEmail, newPassword);
+
       const response = NextResponse.json({
         ok: true,
         authenticated: true,
-        email: newEmail,
+        email: newEmail.toLowerCase(),
+        mode: "local",
       });
-
-      response.cookies.set(ADMIN_COOKIE_NAME, token, {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7,
-      });
-
+      response.cookies.set(
+        ADMIN_COOKIE_NAME,
+        issueSessionToken(newEmail, "local", 1),
+        COOKIE_OPTIONS,
+      );
       return response;
     }
 
