@@ -18,6 +18,7 @@ export * from "./database";
 export * from "./foundations";
 export * from "./engage";
 export * from "./newsroom";
+export * from "./blog";
 export * from "./media";
 export * from "./support";
 export * from "./fundraising";

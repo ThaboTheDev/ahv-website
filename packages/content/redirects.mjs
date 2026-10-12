@@ -14,7 +14,6 @@ export const LEGACY_REDIRECTS = [
   { source: "/archive", destination: "/database" },
   { source: "/podcast", destination: "/media" },
   { source: "/press", destination: "/newsroom" },
-  { source: "/blog", destination: "/newsroom" },
   { source: "/contact", destination: "/engage" },
   { source: "/donate", destination: "/support" },
   { source: "/newsletters", destination: "/newsletter" },

@@ -2,19 +2,23 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandMark } from "@/components/Logo";
 import { Quotation } from "@/components/Source";
-import { DepartmentCard } from "@/components/Cards";
+import { BlogCard, DepartmentCard } from "@/components/Cards";
+import { getCmsStore } from "@/lib/cms";
 import { HOME } from "@content/home";
 import { DEPARTMENTS } from "@content/departments";
-import { POSITIONS } from "@content/positions";
 import { DIALOGUE_SERIES } from "@content/media";
 import { INSTITUTION } from "@content/global";
 import { SITE_URL } from "@/lib/site";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   alternates: { canonical: SITE_URL },
 };
 
 export default function HomePage() {
+  const { positions, blogPosts } = getCmsStore();
+
   return (
     <>
       {/* ------------------------------------------------------------- Hero */}
@@ -160,7 +164,7 @@ export default function HomePage() {
               </div>
 
               <ol className="mt-8 grid gap-x-10 gap-y-px sm:grid-cols-2">
-                {POSITIONS.map((position) => (
+                {positions.map((position) => (
                   <li key={position.slug} className="border-t border-rule-soft">
                     <Link
                       href={`/positions#${position.slug}`}
@@ -292,6 +296,35 @@ export default function HomePage() {
                 </Link>
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------- The Blog */}
+      <section className="border-t border-rule bg-paper px-5 py-14 sm:px-8 sm:py-20">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <header className="max-w-2xl">
+              <p className="eyebrow">The AHV Blog</p>
+              <h2 className="mt-3 text-2xl leading-tight text-ink sm:text-3xl">
+                {HOME.blogSection.title}
+              </h2>
+              <p className="mt-4 font-serif text-[1.0625rem] leading-relaxed text-ash">
+                {HOME.blogSection.lead}
+              </p>
+            </header>
+            <Link
+              href={HOME.blogSection.link.href}
+              className="link-brand font-mono text-xs uppercase tracking-[0.12em]"
+            >
+              {HOME.blogSection.link.label} →
+            </Link>
+          </div>
+
+          <div className="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-2">
+            {blogPosts.slice(0, 2).map((post) => (
+              <BlogCard key={post.slug} post={post} />
+            ))}
           </div>
         </div>
       </section>

@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/Logo";
 import { SocialIcon } from "@/components/SocialIcons";
-import { Ticker } from "@/components/Ticker";
+import { Ticker, type TickerFigure } from "@/components/Ticker";
 import { FUNDRAISE_OPEN_EVENT, fundraiseBus } from "@/components/fundraising-bus";
 import { PRIMARY_NAV, SOCIALS, UTILITY_NAV } from "@content/global";
 
-export function SiteHeader() {
+export function SiteHeader({ figures }: { figures?: TickerFigure[] }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -47,7 +47,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50">
-      <Ticker />
+      <Ticker figures={figures} />
 
       <div
         className={`border-b bg-paper transition-colors duration-200 ${
@@ -71,7 +71,7 @@ export function SiteHeader() {
                   <Link
                     href={item.href}
                     aria-current={isActive(item.href) ? "page" : undefined}
-                    className={`relative block px-2.5 py-2 text-[0.8125rem] font-medium transition-colors ${
+                    className={`relative block whitespace-nowrap px-2 py-2 text-[0.8125rem] font-medium transition-colors ${
                       isActive(item.href)
                         ? "text-brand-800"
                         : "text-ink-soft hover:text-brand-700"
@@ -81,7 +81,7 @@ export function SiteHeader() {
                     {isActive(item.href) && (
                       <span
                         aria-hidden
-                        className="absolute inset-x-2.5 bottom-0.5 h-px bg-brand-700"
+                        className="absolute inset-x-2 bottom-0.5 h-px bg-brand-700"
                       />
                     )}
                   </Link>

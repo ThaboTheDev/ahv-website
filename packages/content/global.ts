@@ -11,6 +11,7 @@ import { POSITIONS } from "./positions";
 import { LEXICON } from "./lexicon";
 import { DATABASE_RECORDS } from "./database";
 import { CONFERENCES } from "./research";
+import { BLOG_POSTS } from "./blog";
 
 export const INSTITUTION = {
   name: "African Hidden Voices (AHV) Research Institution",
@@ -62,6 +63,11 @@ export const PRIMARY_NAV: NavItem[] = [
     blurb: "AHV's books, and the scholarship that cites them.",
   },
   {
+    label: "Blog",
+    href: "/blog",
+    blurb: "Essays and research notes from the six departments.",
+  },
+  {
     label: "Iimboni Database",
     href: "/database",
     blurb: "A research record of Africa's spiritual authorities.",
@@ -80,10 +86,12 @@ export const PRIMARY_NAV: NavItem[] = [
 
 export const UTILITY_NAV: NavItem[] = [
   { label: "Foundations", href: "/foundations" },
+  { label: "Blog", href: "/blog" },
   { label: "Newsroom", href: "/newsroom" },
   { label: "Media", href: "/media" },
   { label: "Research Digest", href: "/newsletter" },
   { label: "Support", href: "/support" },
+  { label: "Admin", href: "/admin" },
 ];
 
 /**
@@ -134,6 +142,12 @@ export function tickerFigures() {
       href: "/institution/record",
       note: "with sources",
     },
+    {
+      value: BLOG_POSTS.length,
+      label: "essays published",
+      href: "/blog",
+      note: "six departments",
+    },
   ];
 }
 
@@ -150,6 +164,7 @@ export const FOOTER_COLUMNS: { heading: string; links: NavItem[] }[] = [
     links: [
       { label: "Research Programme", href: "/research" },
       { label: "Publications", href: "/publications" },
+      { label: "Blog & Essays", href: "/blog" },
       { label: "Iimboni Database", href: "/database" },
       { label: "The Lexicon", href: "/lexicon" },
       { label: "Documentary Method", href: "/database/method" },

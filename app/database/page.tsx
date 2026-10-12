@@ -4,7 +4,9 @@ import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { RecordCard } from "@/components/Cards";
-import { DATABASE_RECORDS, databaseCountries } from "@content/database";
+import { getCmsStore } from "@/lib/cms";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = pageMetadata({
   title: "The Iimboni Database",
@@ -14,8 +16,9 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function DatabasePage() {
-  const countries = databaseCountries();
-  const underVerification = DATABASE_RECORDS.filter(
+  const { databaseRecords } = getCmsStore();
+  const countries = [...new Set(databaseRecords.map((r) => r.country))].sort();
+  const underVerification = databaseRecords.filter(
     (record) => record.status === "Under verification",
   ).length;
 
@@ -27,7 +30,7 @@ export default function DatabasePage() {
         lede="A research record of Africa's spiritual authorities: Iimboni, spiritual kings, healers, guiders and founders of institutions, documented from oral testimony, archival evidence and field research."
         crumbs={[{ label: "Home", href: "/" }, { label: "Iimboni Database" }]}
         meta={[
-          { label: "Records published", value: String(DATABASE_RECORDS.length) },
+          { label: "Records published", value: String(databaseRecords.length) },
           { label: "Countries", value: String(countries.length) },
           {
             label: "Under verification",
@@ -63,7 +66,7 @@ export default function DatabasePage() {
         </h2>
 
         <div className="mt-10 space-y-12">
-          {DATABASE_RECORDS.map((record) => (
+          {databaseRecords.map((record) => (
             <RecordCard key={record.slug} record={record} />
           ))}
         </div>

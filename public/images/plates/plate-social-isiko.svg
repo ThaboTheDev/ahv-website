@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <rect width="800" height="450" fill="#17151A"/>
+  <rect x="24" y="24" width="752" height="402" stroke="#A67C2E" stroke-opacity="0.45" stroke-width="1"/>
+  <line x1="24" y1="84" x2="776" y2="84" stroke="#EBE7E0" stroke-opacity="0.15"/>
+  <text x="48" y="60" fill="#E6D9B8" font-family="monospace" font-size="13" letter-spacing="2">DEPARTMENT 05 · AIS AND SOCIAL SYSTEMS · PLATE I</text>
+  <rect x="90" y="150" width="240" height="150" fill="#45060F" stroke="#A6192E" stroke-width="1.5"/>
+  <text x="115" y="195" fill="#E6D9B8" font-family="monospace" font-size="11" letter-spacing="1.5">01 · PRODUCER</text>
+  <text x="115" y="232" fill="#FBFAF7" font-family="Georgia, serif" font-size="24" font-style="italic">Ukuphahla</text>
+  <text x="115" y="262" fill="#EBE7E0" fill-opacity="0.8" font-family="Georgia, serif" font-size="13">The invocation that connects</text>
+  <text x="115" y="280" fill="#EBE7E0" fill-opacity="0.8" font-family="Georgia, serif" font-size="13">household to spiritual realm</text>
+  <line x1="330" y1="225" x2="462" y2="225" stroke="#A67C2E" stroke-width="2"/>
+  <polygon points="462,219 474,225 462,231" fill="#A67C2E"/>
+  <text x="364" y="210" fill="#E6D9B8" font-family="monospace" font-size="11" letter-spacing="1">REVEALS</text>
+  <rect x="476" y="150" width="240" height="150" fill="#232027" stroke="#EBE7E0" stroke-opacity="0.35" stroke-width="1.5"/>
+  <text x="501" y="195" fill="#E6D9B8" font-family="monospace" font-size="11" letter-spacing="1.5">02 · PRESERVER</text>
+  <text x="501" y="232" fill="#FBFAF7" font-family="Georgia, serif" font-size="24" font-style="italic">Isiko</text>
+  <text x="501" y="262" fill="#EBE7E0" fill-opacity="0.8" font-family="Georgia, serif" font-size="13">Tradition &amp; custom keeping</text>
+  <text x="501" y="280" fill="#EBE7E0" fill-opacity="0.8" font-family="Georgia, serif" font-size="13">what revelation produced</text>
+  <text x="48" y="395" fill="#EBE7E0" fill-opacity="0.6" font-family="monospace" font-size="11">AFRICAN HIDDEN VOICES RESEARCH INSTITUTION · UNMASKING AFRICAN TRUTHS</text>
+</svg>

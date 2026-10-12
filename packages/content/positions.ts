@@ -3,6 +3,8 @@
  * stated at full strength, and the institution's answer.
  */
 
+import type { ContentImage } from "./blog";
+
 export interface Position {
   number: string;
   /** URL anchor, e.g. /positions#spirit-precedes */
@@ -18,6 +20,8 @@ export interface Position {
   answer: string;
   /** Department slug this position belongs to. */
   department: string;
+  /** Optional conceptual diagram or plate. */
+  image?: ContentImage;
 }
 
 export const POSITIONS: Position[] = [

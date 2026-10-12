@@ -12,8 +12,10 @@ import { SocialIcon } from "@/components/SocialIcons";
  * steps out of the way of the scrolling figures; the mobile menu in
  * SiteHeader carries the same four channels as a chip row there.
  */
-export function Ticker() {
-  const figures = tickerFigures();
+export type TickerFigure = ReturnType<typeof tickerFigures>[number];
+
+export function Ticker({ figures: initialFigures }: { figures?: TickerFigure[] }) {
+  const figures = initialFigures ?? tickerFigures();
 
   return (
     <div className="border-b border-rule-soft bg-ink">
@@ -41,24 +43,30 @@ export function Ticker() {
           ))}
         </ul>
 
-        <nav
-          aria-label="AHV social channels"
-          className="hidden shrink-0 items-center border-l border-paper/10 pl-3 sm:flex sm:pl-4"
-        >
-          {SOCIALS.map((social) => (
-            <a
-              key={social.href}
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={`${social.label}: ${social.handle}`}
-              aria-label={`${social.label}: ${social.handle}`}
-              className="grid h-7 w-7 place-items-center rounded-sm text-rule-soft/60 transition-colors hover:bg-paper/10 hover:text-paper"
-            >
-              <SocialIcon name={social.label} className="h-3 w-3" />
-            </a>
-          ))}
-        </nav>
+        <div className="hidden shrink-0 items-center gap-3 border-l border-paper/10 pl-3 sm:flex sm:pl-4">
+          <nav aria-label="AHV social channels" className="flex items-center">
+            {SOCIALS.map((social) => (
+              <a
+                key={social.href}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`${social.label}: ${social.handle}`}
+                aria-label={`${social.label}: ${social.handle}`}
+                className="grid h-7 w-7 place-items-center rounded-sm text-rule-soft/60 transition-colors hover:bg-paper/10 hover:text-paper"
+              >
+                <SocialIcon name={social.label} className="h-3 w-3" />
+              </a>
+            ))}
+          </nav>
+
+          <Link
+            href="/admin"
+            className="border border-paper/20 px-2 py-0.5 font-mono text-[0.625rem] uppercase tracking-[0.14em] text-ochre-soft transition-colors hover:border-ochre hover:text-paper"
+          >
+            Admin
+          </Link>
+        </div>
       </div>
     </div>
   );

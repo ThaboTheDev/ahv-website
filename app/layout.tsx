@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { Fundraising } from "@/components/Fundraising";
 import { JsonLd } from "@/components/JsonLd";
 import { organizationSchema, websiteSchema } from "@/lib/structured-data";
+import { getLiveTickerFigures } from "@/lib/cms";
 import { SITE_URL } from "@/lib/site";
 import { INSTITUTION } from "@content/global";
 
@@ -66,6 +67,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const figures = getLiveTickerFigures();
+
   return (
     <html lang="en-ZA">
       <body className="flex min-h-screen flex-col antialiased">
@@ -77,7 +80,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <SiteHeader />
+        <SiteHeader figures={figures} />
         <main id="main" className="flex-1">
           {children}
         </main>

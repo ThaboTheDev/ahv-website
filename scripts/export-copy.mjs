@@ -56,6 +56,8 @@ const {
   ANNOUNCEMENTS,
   MEDIA_KIT,
   RESEARCH_NOTES_NOTE,
+  BLOG_HERO,
+  BLOG_POSTS,
   DIALOGUE_SERIES,
   RESEARCH_DIGEST,
   SUPPORT,
@@ -553,7 +555,21 @@ p(MEDIA_KIT.body);
 /* ---------------------------------------------------------------- */
 
 out.push("---", "");
-h(1, "23. The AHV Dialogue Series");
+h(1, "23. Blog");
+p("`/blog`");
+p(BLOG_HERO.lede);
+p(BLOG_HERO.intro);
+for (const post of BLOG_POSTS) {
+  h(2, `${post.date} · ${post.title}`);
+  p(`\`/blog/${post.slug}\` · ${post.author} · ${post.category}`);
+  label("Central claim", post.keyClaim);
+  p(post.excerpt);
+}
+
+/* ---------------------------------------------------------------- */
+
+out.push("---", "");
+h(1, "24. The AHV Dialogue Series");
 p("`/media`");
 h(2, DIALOGUE_SERIES.hashtag);
 p(DIALOGUE_SERIES.lede);

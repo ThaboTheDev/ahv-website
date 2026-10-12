@@ -3,7 +3,9 @@ import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { PositionBlock } from "@/components/Cards";
-import { POSITIONS } from "@content/positions";
+import { getCmsStore } from "@/lib/cms";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = pageMetadata({
   title: "Standing Positions",
@@ -13,6 +15,8 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function PositionsPage() {
+  const { positions } = getCmsStore();
+
   return (
     <>
       <PageHero
@@ -46,7 +50,7 @@ export default function PositionsPage() {
         <nav aria-label="The positions" className="mt-12 border-t border-rule pt-8">
           <h2 className="eyebrow">Contents</h2>
           <ol className="mt-4 grid gap-x-10 gap-y-1 sm:grid-cols-2">
-            {POSITIONS.map((position) => (
+            {positions.map((position) => (
               <li key={position.slug}>
                 <a
                   href={`#${position.slug}`}
@@ -67,7 +71,7 @@ export default function PositionsPage() {
 
       <Section tone="wash">
         <div className="space-y-14">
-          {POSITIONS.map((position) => (
+          {positions.map((position) => (
             <PositionBlock key={position.slug} position={position} />
           ))}
         </div>

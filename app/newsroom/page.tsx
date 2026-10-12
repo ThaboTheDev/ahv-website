@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
-import { SourceLine } from "@/components/Source";
+import { MediaFigure, SourceLine } from "@/components/Source";
+import { BlogCard } from "@/components/Cards";
+import { getCmsStore } from "@/lib/cms";
 import {
-  ANNOUNCEMENTS,
   MEDIA_KIT,
   NEWSROOM_INTRO,
   NEWSROOM_LEDE,
   RESEARCH_NOTES_NOTE,
 } from "@content/newsroom";
 import { INSTITUTION_EMAILS } from "@content/contacts";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = pageMetadata({
   title: "Newsroom",
@@ -20,6 +24,8 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function NewsroomPage() {
+  const { announcements, blogPosts } = getCmsStore();
+
   return (
     <>
       <PageHero
@@ -46,7 +52,7 @@ export default function NewsroomPage() {
         </h2>
 
         <div className="mt-10 space-y-10">
-          {ANNOUNCEMENTS.map((item) => (
+          {announcements.map((item) => (
             <article key={item.title} className="border-t border-rule pt-6">
               <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
                 <span className="font-mono text-xs font-semibold text-brand-700">
@@ -59,6 +65,9 @@ export default function NewsroomPage() {
               <h3 className="mt-2 max-w-3xl font-serif text-xl leading-snug text-ink">
                 {item.title}
               </h3>
+              {item.image && (
+                <MediaFigure image={item.image} className="mt-4 max-w-2xl" />
+              )}
               <p className="mt-3 max-w-3xl font-serif text-[1.0625rem] leading-relaxed text-ink-soft">
                 {item.body}
               </p>
@@ -76,8 +85,16 @@ export default function NewsroomPage() {
           <div>
             <p className="eyebrow">Research notes</p>
             <h2 className="mt-3 text-2xl leading-tight text-ink sm:text-3xl">
-              Research notes
+              Research notes and essays
             </h2>
+            <p className="mt-4">
+              <Link
+                href="/blog"
+                className="font-mono text-xs text-brand-700 underline decoration-1 underline-offset-4"
+              >
+                Open the AHV Blog →
+              </Link>
+            </p>
           </div>
           <div>
             <p className="font-serif text-[1.0625rem] leading-relaxed text-ink-soft">
@@ -89,6 +106,12 @@ export default function NewsroomPage() {
               {RESEARCH_NOTES_NOTE}
             </p>
           </div>
+        </div>
+
+        <div className="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-2">
+          {blogPosts.slice(0, 4).map((post) => (
+            <BlogCard key={post.slug} post={post} />
+          ))}
         </div>
       </Section>
 

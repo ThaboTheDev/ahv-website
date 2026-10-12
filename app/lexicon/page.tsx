@@ -3,7 +3,9 @@ import { pageMetadata } from "@/lib/site";
 import { PageHero } from "@/components/PageHero";
 import { Section } from "@/components/Section";
 import { LexiconCard } from "@/components/Cards";
-import { LEXICON } from "@content/lexicon";
+import { getCmsStore } from "@/lib/cms";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = pageMetadata({
   title: "The Lexicon",
@@ -13,7 +15,8 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function LexiconPage() {
-  const pending = LEXICON.filter((entry) => entry.confirmationPending).length;
+  const { lexicon } = getCmsStore();
+  const pending = lexicon.filter((entry) => entry.confirmationPending).length;
 
   return (
     <>
@@ -23,7 +26,7 @@ export default function LexiconPage() {
         lede="The restored vocabulary of African Indigenous Spirituality, defined from within."
         crumbs={[{ label: "Home", href: "/" }, { label: "The Lexicon" }]}
         meta={[
-          { label: "Terms", value: String(LEXICON.length) },
+          { label: "Terms", value: String(lexicon.length) },
           { label: "For confirmation", value: String(pending) },
           { label: "Governing rule", value: "izwi lilandela umoya" },
         ]}
@@ -76,7 +79,7 @@ export default function LexiconPage() {
       <Section tone="paper">
         <h2 className="eyebrow">The terms</h2>
         <div className="mt-8 space-y-10">
-          {LEXICON.map((entry) => (
+          {lexicon.map((entry) => (
             <LexiconCard key={entry.slug} entry={entry} />
           ))}
         </div>

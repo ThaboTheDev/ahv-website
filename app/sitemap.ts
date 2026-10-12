@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { PRIMARY_NAV, UTILITY_NAV } from "@content/global";
 import { DEPARTMENTS } from "@content/departments";
 import { ENGAGE_CHANNELS } from "@content/engage";
+import { getCmsStore } from "@/lib/cms";
 import { absoluteUrl } from "@/lib/site";
 
 const INSTITUTION_PAGES = [
@@ -26,6 +27,7 @@ const RESEARCH_PAGES = ["/database/method", "/database/submit"];
  * `/account` is excluded because it is noindex.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
+  const { blogPosts } = getCmsStore();
   const entries: { path: string; priority: number }[] = [
     { path: "/", priority: 1 },
     ...PRIMARY_NAV.map((item) => ({ path: item.href, priority: 0.9 })),
@@ -34,12 +36,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     })),
     ...INSTITUTION_PAGES.map((path) => ({ path, priority: 0.8 })),
-    ...UTILITY_NAV.map((item) => ({ path: item.href, priority: 0.7 })),
+    ...UTILITY_NAV.filter((item) => item.href !== "/admin").map((item) => ({
+      path: item.href,
+      priority: 0.7,
+    })),
     { path: "/lexicon", priority: 0.7 },
     ...RESEARCH_PAGES.map((path) => ({ path, priority: 0.7 })),
     ...ENGAGE_CHANNELS.map((c) => ({
       path: `/engage/${c.slug}`,
       priority: 0.7,
+    })),
+    ...blogPosts.map((post) => ({
+      path: `/blog/${post.slug}`,
+      priority: 0.8,
     })),
   ];
 

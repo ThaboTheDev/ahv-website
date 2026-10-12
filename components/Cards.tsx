@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { MediaFigure } from "@/components/Source";
 import { getDepartment, type Department } from "@content/departments";
 import type { Position } from "@content/positions";
 import type { LexiconEntry } from "@content/lexicon";
 import type { DatabaseRecord } from "@content/database";
+import type { BlogPost } from "@content/blog";
 
 /* ---------------------------------------------------------------- */
 
@@ -100,6 +102,10 @@ export function PositionBlock({
         </div>
       </div>
 
+      {position.image && (
+        <MediaFigure image={position.image} className="mt-6 max-w-2xl" />
+      )}
+
       {showDepartment && department && (
         <p className="mt-6 font-mono text-xs text-ash">
           Department: {" "}
@@ -139,6 +145,10 @@ export function LexiconCard({ entry }: { entry: LexiconEntry }) {
         {entry.definition}
       </p>
 
+      {entry.image && (
+        <MediaFigure image={entry.image} className="mt-4 max-w-xl" />
+      )}
+
       <p className="mt-4 font-serif text-[1.0625rem] leading-relaxed text-ash">
         <span className="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-ink-soft">
           What it is not.{" "}
@@ -177,6 +187,10 @@ export function RecordCard({ record }: { record: DatabaseRecord }) {
       <p className="mt-4 font-mono text-xs leading-relaxed text-ash">
         {record.lifespan} · {record.place} · {record.country} · {record.region}
       </p>
+
+      {record.image && (
+        <MediaFigure image={record.image} className="mt-5 max-w-xl" />
+      )}
 
       <p className="mt-5 font-serif text-[1.0625rem] leading-relaxed text-ink-soft">
         {record.summary}
@@ -232,3 +246,88 @@ export function ProgrammeList({
     </ol>
   );
 }
+
+/* ---------------------------------------------------------------- */
+
+/** An essay or research note card for the AHV Blog. */
+export function BlogCard({
+  post,
+  showDepartment = true,
+}: {
+  post: BlogPost;
+  showDepartment?: boolean;
+}) {
+  const department = getDepartment(post.department);
+
+  return (
+    <article className="group flex flex-col border-t-2 border-ink/85 pt-6 transition-colors hover:border-brand-700">
+      {post.image?.src && (
+        <Link
+          href={`/blog/${post.slug}`}
+          className="mb-4 block overflow-hidden border border-rule bg-wash"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={post.image.src}
+            alt={post.image.alt || post.title}
+            loading="lazy"
+            className="aspect-[16/9] w-full object-cover transition-transform duration-300 group-hover:scale-[1.01]"
+          />
+        </Link>
+      )}
+      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <time
+          dateTime={post.isoDate}
+          className="font-mono text-xs font-semibold text-brand-700"
+        >
+          {post.date}
+        </time>
+        <span className="font-mono text-[0.625rem] uppercase tracking-[0.12em] text-ochre">
+          {post.category}
+        </span>
+        <span className="font-mono text-xs text-ash">· {post.readingTime}</span>
+      </div>
+
+      <h3 className="mt-2.5 font-serif text-xl leading-snug text-ink transition-colors group-hover:text-brand-800">
+        <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+      </h3>
+
+      <p className="mt-3 flex-1 font-serif text-[1.0625rem] leading-relaxed text-ink-soft">
+        {post.excerpt}
+      </p>
+
+      <p className="mt-4 border-l-2 border-rule pl-4 font-serif text-sm italic leading-relaxed text-ash">
+        {post.keyClaim}
+      </p>
+
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border-t border-rule-soft pt-4">
+        {showDepartment && department ? (
+          <Link
+            href={`/departments/${department.slug}`}
+            className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-ash transition-colors hover:text-brand-700"
+          >
+            {department.title}
+          </Link>
+        ) : (
+          <span className="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-ash">
+            {post.author}
+          </span>
+        )}
+
+        <Link
+          href={`/blog/${post.slug}`}
+          className="inline-flex items-center gap-1.5 font-mono text-xs text-brand-700 transition-colors hover:text-brand-900"
+        >
+          <span className="underline decoration-1 underline-offset-4">
+            Read essay
+          </span>
+          <span aria-hidden className="text-ochre">
+            →
+          </span>
+        </Link>
+      </div>
+    </article>
+  );
+}
+
+

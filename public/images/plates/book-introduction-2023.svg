@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 640" fill="none">
+  <rect width="480" height="640" fill="#17151A"/>
+  <rect x="24" y="24" width="432" height="592" stroke="#A67C2E" stroke-opacity="0.55" stroke-width="1.5"/>
+  <rect x="36" y="36" width="408" height="568" stroke="#A6192E" stroke-opacity="0.4" stroke-width="1"/>
+  <text x="64" y="96" fill="#E6D9B8" font-family="monospace" font-size="11" letter-spacing="2">ISAMBULO PUBLICATIONS · 2023</text>
+  <line x1="64" y1="118" x2="140" y2="118" stroke="#C8102E" stroke-width="2"/>
+  <text x="64" y="190" fill="#FBFAF7" font-family="Georgia, serif" font-size="30">An Introduction</text>
+  <text x="64" y="230" fill="#FBFAF7" font-family="Georgia, serif" font-size="30">into Afrikan</text>
+  <text x="64" y="270" fill="#FBFAF7" font-family="Georgia, serif" font-size="30">Indigenous</text>
+  <text x="64" y="310" fill="#FBFAF7" font-family="Georgia, serif" font-size="30">Spirituality</text>
+  <text x="64" y="510" fill="#E6D9B8" font-family="Georgia, serif" font-size="15">African Hidden Voices</text>
+  <text x="64" y="540" fill="#EBE7E0" fill-opacity="0.55" font-family="monospace" font-size="11">ISBN 9780796132277 · JOHANNESBURG</text>
+</svg>

@@ -7,6 +7,8 @@
  * fails is given.
  */
 
+import type { ContentImage } from "./blog";
+
 export interface LexiconEntry {
   /** The term, in the indigenous language. */
   term: string;
@@ -23,6 +25,8 @@ export interface LexiconEntry {
    * yet settled in its final published form. Shown rather than hidden.
    */
   confirmationPending?: boolean;
+  /** Optional visual plate or diagram. */
+  image?: ContentImage;
 }
 
 export const LEXICON: LexiconEntry[] = [
